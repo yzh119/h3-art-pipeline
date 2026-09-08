@@ -1,6 +1,6 @@
 # Vampire and Vampire Lord
 
-Local package0.11.0 adds CVAMP and CNOSFE without engine changes. CVAMP has13
+Local package0.11.1 adds CVAMP and CNOSFE without engine changes. CVAMP has13
 used native groups/84frames per scale; CNOSFE has16/105. Both retain450x400
 logical canvases and ground267, provide1x/2x bodies and precomputed effects, and
 travel as bats. The animations and smoke are locally authored. Appearance and
@@ -21,11 +21,20 @@ The dense task's auto-rig request returnedHTTP400 without a task ID. Its face
 count exceeds the documented300,000limit for task-ID rigging:
 [Meshy rigging API](https://docs.meshy.ai/en/api/rigging). The local fallback uses
 `transfer_rig.py`: simplify to160,000faces, fit height/ground to the old rig,
-interpolate three nearby donor vertices' skin weights, then repair bone tails
-and IK in`vampire_study.py`. GLB export retains the four highest influences and
-renormalizes them. The exported result is reimported for motion checks.
-Nearest donor distanceP95=.064101m, max=.093228m; this transfer is specific to
-related models and still needs visual inspection, particularly cloth and hands.
+retain the old skeleton as joint landmarks, then use `vampire_study.py --binding
+heat` to rebuild bone tails and calculate fresh skin weights locally. The first
+nearest-vertex weight transfer inherited invalid donor weights (including boots
+following Head and ForeArm). Spatial filtering alone then pulled the coat apart.
+Those transfer attempts are rejected for delivery. Both final humanoids use
+Blender bone-heat weighting after welding coincident vertices, and exclude end
+markers from deformation. Existing skin weights are discarded.
+
+Weld UV-split positions before decimation while retaining per-corner UVs.
+Simplifying disconnected UV islands independently caused another round of cracks.
+The Lord goes from1,200,232imported vertices to975,159welded vertices and then
+159,999faces/79,892vertices in the simplified working mesh. This local workflow
+uses the previous Meshy rig for joint locations, without another accepted paid
+rigging task.
 
 The bat's welded boundary count fell196→52 after small simple loops were patched.
 Only loops with3–16edges and diameter<.022model units are filled. UV corners come
@@ -50,16 +59,19 @@ blender -b --python-exit-code 1 --python creature-art/transfer_rig.py -- \
 blender -b --python-exit-code 1 --python creature-art/bat_study.py -- \
   --model "$ART_WORKSPACE/bat.glb" --out "$ART_WORKSPACE/bat-flight"
 blender -b --python-exit-code 1 --python creature-art/vampire_study.py -- \
-  --model "$ART_WORKSPACE/lord-transfer/rigged.glb" --variant vampire-lord \
+  --model "$ART_WORKSPACE/lord-transfer/rigged.glb" --variant vampire-lord --binding heat \
   --references "$ART_WORKSPACE/reference/manifest.json" \
   --out "$ART_WORKSPACE/lord-human"
 blender -b --python-exit-code 1 --python creature-art/vampire_flight.py -- \
   --human "$ART_WORKSPACE/lord-human/holding.blend" \
   --bat "$ART_WORKSPACE/bat-flight/flight.blend" \
   --out "$ART_WORKSPACE/lord-flight"
+blender -b --python-exit-code 1 --python creature-art/check_skin.py -- \
+  --scenes "$ART_WORKSPACE/lord-human" --out "$ART_WORKSPACE/lord-skin-check.json"
 .venv/bin/python creature-art/assemble_vampire.py \
   --human "$ART_WORKSPACE/lord-human" --flight "$ART_WORKSPACE/lord-flight" \
   --references "$ART_WORKSPACE/reference/manifest.json" --variant vampireLord \
+  --skin-checks "$ART_WORKSPACE/lord-skin-check.json" \
   --out "$ART_WORKSPACE/lord-complete"
 ```
 
@@ -70,10 +82,18 @@ Use`--preview-only` on the humanoid tool first. Human/flight intermediate export
 remain marked incomplete; the assembler checks every native group/count/hash,
 canvas and alpha margin before producing a complete export for`roster_mod.py`.
 
+Run `check_skin.py --scenes "$ART_WORKSPACE/lord-human" --out
+"$ART_WORKSPACE/lord-skin-check.json"` in Blender before assembly. It reopens all
+humanoid scenes and samples three poses each, rejecting edges stretched more
+than8x with more than.08m absolute growth. This catches the rejected weight
+transfer that passed IK endpoint checks. It does not certify cloth aesthetics.
+
 ## Checks and limitations
 
-Saved humanoid scenes passed598base+781Lord integer/half-frame samples. Maximum
-IK error=.000105531m; minimum death vertexZ=.00215019m. The original bat loop
+Saved humanoid scenes passed598base+781Lord integer/half-frame samples.
+IK and floor results are recorded in each final manifest. Numerical skin checks
+add three reopened poses per humanoid scene,30base+39Lord; all must have zero
+large stretched edges before assembly. The original bat loop
 passed49saved samples and a repeated-endpoint bounds check. Final flight is
 retimed to the original level/down/level/up pattern; scale.68 and rootZ1.5bring
 its span/height closer to the native reference.

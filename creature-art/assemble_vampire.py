@@ -14,6 +14,7 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--human',type=Path,required=True);p.add_argument('--flight',type=Path,required=True);p.add_argument('--references',type=Path,required=True)
     p.add_argument('--variant',choices=['vampire','vampireLord'],required=True);p.add_argument('--out',type=Path,required=True)
+    p.add_argument('--skin-checks',type=Path,required=True)
     args=p.parse_args()
     if args.out.exists():raise ValueError('Use fresh output directory')
     reference=next(r for r in json.loads(args.references.read_text()) if r['name']==args.variant)
@@ -21,6 +22,11 @@ def main():
     checks=sources[0][1]['checks']
     if checks['maximumSavedIKError']>.008 or checks['minimumDeathZ']<-.002:raise ValueError('Humanoid constraint failure')
     if any(m.get('artisticallyRejected') for _,m in sources):raise ValueError('Rejected source')
+    skin=json.loads(args.skin_checks.read_text())
+    if skin['largeStretchedEdges']:raise ValueError('Skin deformation check failed')
+    checked={r['scene']:r['sourceSHA256'] for r in skin['samples']}
+    for scene in args.human.glob('*.blend'):
+        if checked.get(scene.name)!=digest(scene):raise ValueError(f'Missing/stale skin check: {scene.name}')
     clips={};pending=[]
     for gid,count in reference['groups'].items():
         group=GROUP_NAMES.get(int(gid))
@@ -61,7 +67,7 @@ def main():
                     frame['sourceSHA256']=frame['sha256'];frame['sha256']=digest(path)
     for folder,_ in sources:
         for path in folder.glob('*.blend'):shutil.copy2(path,args.out/path.name)
-    report={'variant':args.variant,'previewOnly':False,'clips':clips,'checks':checks,'nativeCountsVerified':True,'transitionEndpointsMatch':True,'endpointCanonicalization':endpoint_checks,'sources':[{'manifestSHA256':digest(f/'manifest.json')} for f,_ in sources]}
+    report={'variant':args.variant,'previewOnly':False,'clips':clips,'checks':checks,'nativeCountsVerified':True,'skinChecksSHA256':digest(args.skin_checks),'skinCheckSamples':len(skin['samples']),'transitionEndpointsMatch':True,'endpointCanonicalization':endpoint_checks,'sources':[{'manifestSHA256':digest(f/'manifest.json')} for f,_ in sources]}
     (args.out/'manifest.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps({'variant':args.variant,'groups':len(clips),'frames':len(pending)}))
 
 if __name__=='__main__':main()

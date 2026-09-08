@@ -14,6 +14,7 @@ from pathlib import Path
 import sys
 
 import bpy
+import bmesh
 from mathutils import Vector, Quaternion
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 import render_sprites as render
@@ -25,7 +26,7 @@ from settle_equipment import lowest
 from vcmi_anim import GROUP_NAMES
 
 
-def rebuild(model, variant):
+def rebuild(model, variant, binding="import"):
     meshes,camera,_=render.build_scene(str(model),(900,800),15,-45,534,168,24,3,.55)
     old=render.find_armature();source=max(meshes,key=lambda o:len(o.data.vertices))
     heads={b.name:old.matrix_world@b.head_local for b in old.data.bones}
@@ -53,8 +54,16 @@ def rebuild(model, variant):
     for side in ['Left','Right']:
         stance[side+'Arm']['target'][1]-=.17
         stance[side+'Arm']['target'][2]+=.12
+    if binding=='heat':
+        body.vertex_groups.clear();body.modifiers.clear();body.parent=None
+        bm=bmesh.new();bm.from_mesh(body.data);bmesh.ops.remove_doubles(bm,verts=list(bm.verts),dist=1e-6);bm.to_mesh(body.data);bm.free()
+        for bone in arm.data.bones:
+            if bone.name.endswith('_end') or bone.name.endswith('ToeBase'):bone.use_deform=False
+        bpy.ops.object.select_all(action='DESELECT');body.select_set(True);arm.select_set(True);bpy.context.view_layer.objects.active=arm
+        bpy.ops.object.parent_set(type='ARMATURE_AUTO');matrix=body.matrix_world.copy();body.parent=root;body.matrix_world=matrix
+        if any(sum(g.weight for g in vertex.groups)<1e-6 for vertex in body.data.vertices):raise ValueError('Heat binding left unweighted vertices')
     bpy.context.view_layer.update()
-    return arm,root,controls,profile,{'landmarks':landmarks,'bodyVertices':len(body.data.vertices)}
+    return arm,root,controls,profile,{'landmarks':landmarks,'binding':binding,'bodyVertices':len(body.data.vertices)}
 
 
 def pose(profile,group,t):
@@ -95,6 +104,7 @@ def apply(arm,root,controls,spec,group,t):
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--model',type=Path,required=True);p.add_argument('--out',type=Path,required=True)
     p.add_argument('--references',type=Path,required=True);p.add_argument('--preview-only',action='store_true');p.add_argument('--no-render',action='store_true');p.add_argument('--variant',choices=['vampire','vampire-lord'],default='vampire')
+    p.add_argument('--binding',choices=['import','heat'],default='import')
     args=p.parse_args(sys.argv[sys.argv.index('--')+1:])
     if args.out.exists():raise ValueError('Output must be new')
     args.out.mkdir(parents=True)
@@ -103,7 +113,7 @@ def main():
     for name in ['vampire_study.py','lich_study.py','zombie_study.py','skeleton_study.py','skeleton_motion.py','skeleton_geometry.py','render_sprites.py','settle_equipment.py','vcmi_anim.py','poses.py']:
         source=Path(__file__).with_name(name);shutil.copy2(source,code/name);scripts[name]=hashlib.sha256(source.read_bytes()).hexdigest()
     ref=next(x for x in json.loads(args.references.read_text()) if x['name']==('vampireLord' if args.variant=='vampire-lord' else 'vampire'))
-    arm,root,controls,profile,repair=rebuild(args.model,args.variant);scene=bpy.context.scene
+    arm,root,controls,profile,repair=rebuild(args.model,args.variant,args.binding);scene=bpy.context.scene
     scene.render.threads_mode='FIXED';scene.render.threads=4;scene.cycles.use_animated_seed=False;scene.cycles.seed=0
     fill=bpy.data.objects['fill'];fill.data.energy=2;fill.rotation_euler=(math.radians(78),0,0)
     apply(arm,root,controls,pose(profile,'HOLDING',0),'HOLDING',0)

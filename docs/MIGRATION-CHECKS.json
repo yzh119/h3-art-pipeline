@@ -1,0 +1,22 @@
+{
+  "pythonScriptsParsed": 38,
+  "publicFilesBeforeThisReport": 72,
+  "publicAssetBinaries": 0,
+  "creatureValidation": {
+    "infos": 188,
+    "warnings": 0,
+    "errors": 0,
+    "identicalToPreMigration": true
+  },
+  "townReference": {
+    "selectedLayers": 23,
+    "mapVariants": 3
+  },
+  "townBuild": {
+    "structures": 42,
+    "mapVariants": 3,
+    "frames": 103,
+    "alphaAndDimensions": "passed"
+  },
+  "engineSourceChanges": false
+}

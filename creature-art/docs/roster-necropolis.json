@@ -1,0 +1,106 @@
+{
+  "_comment": "Necropolis roster. `aspect` is the original's width-to-height at idle, measured with def_extract.py. `design` says what the creature looks like and carries no pose; `pose` is the stance for the front/side views only. The apose view supplies its own pose, because a mesh has to be riggable and a compact stance defeats pose estimation.",
+  "_moderation": "FLUX rejects graphic decay wording (\"rotting flesh\", \"dried blood\", \"bloated\") as Violence. The undead entries are worded around it: desiccated, drawn tight, tattered. Keep it that way.",
+  "_style": "Painterly stylised realism, not photoreal, detail subordinated to shape. Bold readable silhouette, three strong value masses with a wide range from near-black recesses to lit highlights, thick simplified forms. Weapons and equipment must contrast in value and hue against the body.",
+  "creatures": [
+    {
+      "name": "skeleton",
+      "def": "CSKELE.DEF",
+      "aspect": 0.53,
+      "design": "Stylised fantasy skeleton warrior, bare bone, exaggerated skull and pelvis masses, thick simplified limbs, carrying a long sword with a dark oxidised iron blade and a bronze crossguard. The sword must be clearly darker than the bone -- at sprite size it only reads as a sword if it contrasts with the body. Desaturated grey-green ivory bone, dark iron, bronze.",
+      "pose": "Hunched forward with the skull thrust ahead of the shoulders, sword low and angled down across the front of the body, arms near the ribs, short forward step."
+    },
+    {
+      "name": "skeletonWarrior",
+      "def": "CWSKEL.DEF",
+      "aspect": 0.48,
+      "design": "Stylised fantasy armoured skeleton warrior, rusted iron helm and shoulder plates over bare bone, a round shield and a sword. Desaturated bone and dark oxidised iron.",
+      "pose": "Hunched forward, shield held close to the chest, sword low across the body."
+    },
+    {
+      "name": "walkingDead",
+      "def": "CZOMBI.DEF",
+      "aspect": 0.45,
+      "design": "Undead walking dead with desiccated grey-green skin, torn dark trousers and a short cleaver in the right hand. Bare upper torso with ragged remnants.",
+      "pose": "Arms hanging heavy and forward, head tilted to one side, shambling forward step, narrow slumped silhouette."
+    },
+    {
+      "name": "zombieLord",
+      "def": "CZOMLO.DEF",
+      "aspect": 0.46,
+      "design": "Upgraded zombie wearing a brown leather jerkin, metal helmet, brown trousers and dark boots, carrying a broader cleaver.",
+      "pose": "Arms hanging forward, slumped heavy stance."
+    },
+    {
+      "name": "wight",
+      "def": "CWIGHT.DEF",
+      "aspect": 0.33,
+      "design": "Floating skeletal wight in a brown hood and long ragged brown robe, skull visible in the hood, bony hands near the waist, no visible feet or carried weapon.",
+      "pose": "Arms held close, robe hanging straight, very tall narrow silhouette."
+    },
+    {
+      "name": "wraith",
+      "def": "CWRAIT.DEF",
+      "aspect": 0.38,
+      "design": "Floating skeletal wraith in near-black hooded tattered robes, pale skull and bony hands. No scythe; attacks with a spectral hand slash.",
+      "pose": "Hands held close to the waist, tall narrow floating silhouette."
+    },
+    {
+      "name": "vampire",
+      "def": "CVAMP.DEF",
+      "aspect": 0.47,
+      "design": "Gaunt white-faced vampire with pointed ears, clawed hands, dark grey fitted tunic and trousers, restrained brown-red trim. Changes into a bat for movement.",
+      "pose": "Cloak wrapped close to the body, arms drawn in, slight forward crouch."
+    },
+    {
+      "name": "vampireLord",
+      "def": "CNOSFE.DEF",
+      "aspect": 0.49,
+      "design": "Gaunt white-faced vampire lord with pointed ears, long burnt-orange and dark-red coat over dark trousers, raised clawed hands. Changes into a bat for movement.",
+      "pose": "Cloak held close, hands raised, commanding upright posture."
+    },
+    {
+      "name": "lich",
+      "def": "CLICH.DEF",
+      "aspect": 0.42,
+      "design": "Skeletal lich in a cylindrical metal headdress and long silver chainmail skirt, gold-edged shoulder armour, skull with red eye points; carries a tall plain staff.",
+      "pose": "One bony hand raised in a casting gesture close to the chest, staff held vertically, tall narrow silhouette."
+    },
+    {
+      "name": "powerLich",
+      "def": "CPLICH.DEF",
+      "aspect": 0.41,
+      "design": "Skeletal power lich in an elaborate tall gold headdress and long chainmail skirt, ornate gold-edged shoulder armour; carries a tall staff crowned with a gold ring.",
+      "pose": "Both bony hands raised close to the chest channelling energy, staff vertical, tall narrow silhouette."
+    },
+    {
+      "name": "blackKnight",
+      "def": "CBKNIG.DEF",
+      "aspect": 0.81,
+      "design": "Armoured black knight on a dark intact horse, blackened plate and pointed closed helm, red eyes, crimson saddle cloth, curved sword.",
+      "pose": "Sword held low along the horse's flank, horse standing in a short stride with head low, rider compact on the saddle."
+    },
+    {
+      "name": "dreadKnight",
+      "def": "CBLORD.DEF",
+      "aspect": 0.84,
+      "design": "Armoured dread knight on a dark intact horse with ornate silver-black barding, crimson saddle cloth and curved sword; tall pointed closed helm.",
+      "pose": "Sword raised close to the shoulder, horse in a short stride with head low."
+    },
+    {
+      "name": "boneDragon",
+      "def": "CNDRGN.DEF",
+      "aspect": 0.76,
+      "design": "Stylised fantasy bone dragon, a skeletal dragon with tattered membrane stretched between exposed wing bones, skull head with empty sockets, spined tail. Grey-green ivory bone and dark tattered membrane.",
+      "pose": "Upright on hind legs, small foreclaws raised, long skeletal neck and tail, membranous wings folded beside the body."
+    },
+    {
+      "name": "ghostDragon",
+      "def": "CHDRGN.DEF",
+      "aspect": 0.76,
+      "design": "Stylised fantasy ghost dragon, a spectral translucent dragon with tattered ghostly wings, hollow glowing eyes, trailing wisps at the tail. Cold desaturated grey-green translucence, faint inner glow.",
+      "pose": "Upright on hind legs, small foreclaws raised, long skeletal neck and tail, pale tattered wings folded beside the body."
+    }
+  ],
+  "_reference_audit": "2026-09-08: corrected equipment and forms against native holding/moving/attack/death frames. Original DEFS remain authoritative; older generated descriptions are not design requirements."
+}

@@ -1,0 +1,18 @@
+{
+    "_comment": "Melee layout plus the three SHOOT_* groups required for ranged units.",
+
+    "MOVING":       8,
+    "MOUSEON":      4,
+    "HOLDING":      8,
+    "HITTED":       3,
+    "DEFENCE":      3,
+    "DEATH":        6,
+    "TURN_L":       2,
+    "TURN_R":       2,
+    "ATTACK_UP":    6,
+    "ATTACK_FRONT": 6,
+    "ATTACK_DOWN":  6,
+    "SHOOT_UP":     5,
+    "SHOOT_FRONT":  5,
+    "SHOOT_DOWN":   5
+}

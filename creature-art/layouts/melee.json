@@ -1,0 +1,15 @@
+{
+    "_comment": "Typical melee creature. Frame counts follow common H3 defs; replace them with the real counts from `def2bmp <NAME>.def` for the creature you are targeting.",
+
+    "MOVING":       8,
+    "MOUSEON":      4,
+    "HOLDING":      8,
+    "HITTED":       3,
+    "DEFENCE":      3,
+    "DEATH":        6,
+    "TURN_L":       2,
+    "TURN_R":       2,
+    "ATTACK_UP":    6,
+    "ATTACK_FRONT": 6,
+    "ATTACK_DOWN":  6
+}

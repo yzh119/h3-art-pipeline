@@ -1,0 +1,690 @@
+{
+  "source_sha256": "ff3469ee9169ff0e3d8d668a146113f317adb7aea4a740b9ef5d95a17fc4b29d",
+  "label": "Zombie",
+  "fps": 30,
+  "camera": {
+    "azimuth": -65,
+    "elevation": 15,
+    "height": 82,
+    "ground": 266
+  },
+  "clips": {
+    "HOLDING": {
+      "sprite_frames": 8,
+      "seconds": 2,
+      "loop": true
+    },
+    "MOVING": {
+      "sprite_frames": 10,
+      "seconds": 1,
+      "loop": true
+    },
+    "ATTACK_FRONT": {
+      "sprite_frames": 7,
+      "seconds": 1.2,
+      "loop": false
+    },
+    "MOVE_START": {
+      "sprite_frames": 1,
+      "seconds": 0.2,
+      "loop": false
+    },
+    "MOVE_END": {
+      "sprite_frames": 1,
+      "seconds": 0.2,
+      "loop": false
+    },
+    "MOUSEON": {
+      "sprite_frames": 9,
+      "seconds": 0.9,
+      "loop": false
+    },
+    "HITTED": {
+      "sprite_frames": 7,
+      "seconds": 0.7,
+      "loop": false
+    },
+    "DEFENCE": {
+      "sprite_frames": 8,
+      "seconds": 0.8,
+      "loop": false
+    },
+    "DEATH": {
+      "sprite_frames": 9,
+      "seconds": 0.9,
+      "loop": false
+    },
+    "TURN_L": {
+      "sprite_frames": 3,
+      "seconds": 0.3,
+      "loop": false
+    },
+    "TURN_R": {
+      "sprite_frames": 3,
+      "seconds": 0.3,
+      "loop": false
+    },
+    "ATTACK_UP": {
+      "sprite_frames": 7,
+      "seconds": 1.2,
+      "loop": false
+    },
+    "ATTACK_DOWN": {
+      "sprite_frames": 7,
+      "seconds": 1.2,
+      "loop": false
+    }
+  },
+  "stance": {
+    "hips": [
+      0,
+      0,
+      0.96
+    ],
+    "lean": 8,
+    "head_tilt": -8,
+    "RightArm": {
+      "target": [
+        -0.19,
+        -0.28,
+        1.05
+      ],
+      "pole": [
+        -0.44,
+        0.08,
+        1.14
+      ]
+    },
+    "LeftArm": {
+      "target": [
+        0.22,
+        -0.04,
+        0.88
+      ],
+      "pole": [
+        0.43,
+        0.12,
+        1.05
+      ]
+    },
+    "RightLeg": {
+      "target": [
+        -0.13,
+        0.04,
+        0.106
+      ],
+      "pole": [
+        -0.15,
+        -0.6,
+        0.5
+      ]
+    },
+    "LeftLeg": {
+      "target": [
+        0.13,
+        -0.1,
+        0.108
+      ],
+      "pole": [
+        0.15,
+        -0.6,
+        0.5
+      ]
+    },
+    "blade_elevation": 68,
+    "root_pitch": 0,
+    "root_yaw": 0,
+    "floor_support": 0
+  },
+  "walk": {
+    "stride": 0.38,
+    "stance_fraction": 0.68,
+    "right_lift": 0.035,
+    "left_lift": 0.07,
+    "arm_swing": 0.045,
+    "hip_bob": 0.016
+  },
+  "attack_keys": [
+    [
+      0,
+      {}
+    ],
+    [
+      0.25,
+      {
+        "lean": -5,
+        "RightArm": {
+          "target": [
+            -0.22,
+            0.06,
+            1.72
+          ],
+          "pole": [
+            -0.45,
+            0.35,
+            1.43
+          ]
+        },
+        "blade_elevation": 130
+      }
+    ],
+    [
+      0.46,
+      {
+        "lean": 27,
+        "RightArm": {
+          "target": [
+            -0.2,
+            -0.48,
+            1.05
+          ],
+          "pole": [
+            -0.45,
+            -0.3,
+            1.18
+          ]
+        },
+        "blade_elevation": 5
+      }
+    ],
+    [
+      0.62,
+      {
+        "lean": 23,
+        "RightArm": {
+          "target": [
+            -0.22,
+            -0.37,
+            1.0
+          ],
+          "pole": [
+            -0.44,
+            -0.13,
+            1.08
+          ]
+        },
+        "blade_elevation": -30
+      }
+    ],
+    [
+      1,
+      {}
+    ]
+  ],
+  "action_keys": {
+    "MOUSEON": [
+      [
+        0,
+        {}
+      ],
+      [
+        0.4,
+        {
+          "head_tilt": 12,
+          "lean": 4,
+          "RightArm": {
+            "target": [
+              -0.19,
+              -0.27,
+              1.16
+            ]
+          },
+          "blade_elevation": 80
+        }
+      ],
+      [
+        1,
+        {}
+      ]
+    ],
+    "HITTED": [
+      [
+        0,
+        {}
+      ],
+      [
+        0.16,
+        {
+          "lean": 20
+        }
+      ],
+      [
+        0.4,
+        {
+          "lean": -18,
+          "head_tilt": 16,
+          "RightArm": {
+            "target": [
+              -0.32,
+              0.02,
+              1.6
+            ],
+            "pole": [
+              -0.5,
+              0.15,
+              1.2
+            ]
+          },
+          "LeftArm": {
+            "target": [
+              0.43,
+              -0.02,
+              1.2
+            ],
+            "pole": [
+              0.5,
+              0.2,
+              1.1
+            ]
+          },
+          "blade_elevation": 105
+        }
+      ],
+      [
+        0.65,
+        {
+          "lean": -10,
+          "head_tilt": 10,
+          "RightArm": {
+            "target": [
+              -0.3,
+              -0.04,
+              1.31
+            ]
+          },
+          "LeftArm": {
+            "target": [
+              0.34,
+              -0.04,
+              1.1
+            ]
+          }
+        }
+      ],
+      [
+        1,
+        {}
+      ]
+    ],
+    "DEFENCE": [
+      [
+        0,
+        {}
+      ],
+      [
+        0.35,
+        {
+          "hips": [
+            0,
+            0,
+            0.9
+          ],
+          "lean": 16,
+          "RightArm": {
+            "target": [
+              -0.16,
+              -0.32,
+              1.34
+            ],
+            "pole": [
+              -0.42,
+              -0.07,
+              1.14
+            ]
+          },
+          "LeftArm": {
+            "target": [
+              0.2,
+              -0.26,
+              1.15
+            ]
+          },
+          "blade_elevation": 90
+        }
+      ],
+      [
+        0.6,
+        {
+          "hips": [
+            0,
+            0,
+            0.9
+          ],
+          "lean": 12,
+          "RightArm": {
+            "target": [
+              -0.16,
+              -0.31,
+              1.35
+            ],
+            "pole": [
+              -0.42,
+              -0.07,
+              1.14
+            ]
+          },
+          "LeftArm": {
+            "target": [
+              0.2,
+              -0.26,
+              1.15
+            ]
+          },
+          "blade_elevation": 100
+        }
+      ],
+      [
+        1,
+        {}
+      ]
+    ],
+    "DEATH": [
+      [
+        0,
+        {}
+      ],
+      [
+        0.2,
+        {
+          "lean": -15,
+          "RightArm": {
+            "target": [
+              -0.32,
+              0.02,
+              1.6
+            ]
+          },
+          "LeftArm": {
+            "target": [
+              0.35,
+              0.02,
+              1.48
+            ]
+          },
+          "blade_elevation": 115
+        }
+      ],
+      [
+        0.45,
+        {
+          "hips": [
+            0,
+            0,
+            0.84
+          ],
+          "lean": -8,
+          "root_pitch": -35,
+          "floor_support": 1,
+          "RightArm": {
+            "target": [
+              -0.32,
+              -0.05,
+              1.42
+            ]
+          },
+          "LeftArm": {
+            "target": [
+              0.33,
+              -0.08,
+              1.37
+            ]
+          },
+          "RightLeg": {
+            "target": [
+              -0.15,
+              -0.27,
+              0.3
+            ]
+          },
+          "LeftLeg": {
+            "target": [
+              0.15,
+              -0.18,
+              0.38
+            ]
+          },
+          "blade_elevation": 110
+        }
+      ],
+      [
+        0.72,
+        {
+          "hips": [
+            0,
+            0,
+            0.8
+          ],
+          "lean": 5,
+          "root_pitch": -85,
+          "root_yaw": -12,
+          "floor_support": 1,
+          "RightArm": {
+            "target": [
+              -0.32,
+              -0.15,
+              1.03
+            ]
+          },
+          "LeftArm": {
+            "target": [
+              0.32,
+              -0.1,
+              1.01
+            ]
+          },
+          "RightLeg": {
+            "target": [
+              -0.16,
+              -0.28,
+              0.25
+            ]
+          },
+          "LeftLeg": {
+            "target": [
+              0.19,
+              -0.3,
+              0.33
+            ]
+          },
+          "blade_elevation": 0
+        }
+      ],
+      [
+        1,
+        {
+          "hips": [
+            0,
+            0,
+            0.86
+          ],
+          "lean": 5,
+          "root_pitch": -90,
+          "root_yaw": -12,
+          "floor_support": 1,
+          "RightArm": {
+            "target": [
+              -0.3,
+              -0.1,
+              1.03
+            ]
+          },
+          "LeftArm": {
+            "target": [
+              0.3,
+              -0.08,
+              1.01
+            ]
+          },
+          "RightLeg": {
+            "target": [
+              -0.16,
+              -0.1,
+              0.1
+            ]
+          },
+          "LeftLeg": {
+            "target": [
+              0.19,
+              -0.13,
+              0.12
+            ]
+          },
+          "blade_elevation": 0
+        }
+      ]
+    ],
+    "ATTACK_UP": [
+      [
+        0,
+        {}
+      ],
+      [
+        0.25,
+        {
+          "lean": -5,
+          "RightArm": {
+            "target": [
+              -0.22,
+              0.06,
+              1.72
+            ],
+            "pole": [
+              -0.45,
+              0.35,
+              1.43
+            ]
+          },
+          "blade_elevation": 130
+        }
+      ],
+      [
+        0.46,
+        {
+          "lean": 5,
+          "RightArm": {
+            "target": [
+              -0.22,
+              -0.4,
+              1.58
+            ],
+            "pole": [
+              -0.45,
+              -0.05,
+              1.37
+            ]
+          },
+          "blade_elevation": 55
+        }
+      ],
+      [
+        0.62,
+        {
+          "lean": 12,
+          "RightArm": {
+            "target": [
+              -0.2,
+              -0.4,
+              1.23
+            ]
+          },
+          "blade_elevation": 25
+        }
+      ],
+      [
+        1,
+        {}
+      ]
+    ],
+    "ATTACK_DOWN": [
+      [
+        0,
+        {}
+      ],
+      [
+        0.25,
+        {
+          "lean": -5,
+          "RightArm": {
+            "target": [
+              -0.22,
+              0.06,
+              1.72
+            ],
+            "pole": [
+              -0.45,
+              0.35,
+              1.43
+            ]
+          },
+          "blade_elevation": 130
+        }
+      ],
+      [
+        0.46,
+        {
+          "hips": [
+            0,
+            0,
+            0.72
+          ],
+          "lean": 48,
+          "RightArm": {
+            "target": [
+              -0.2,
+              -0.51,
+              0.69
+            ],
+            "pole": [
+              -0.44,
+              -0.3,
+              0.9
+            ]
+          },
+          "LeftArm": {
+            "target": [
+              0.24,
+              -0.27,
+              0.74
+            ]
+          },
+          "blade_elevation": -55
+        }
+      ],
+      [
+        0.62,
+        {
+          "hips": [
+            0,
+            0,
+            0.74
+          ],
+          "lean": 42,
+          "RightArm": {
+            "target": [
+              -0.2,
+              -0.44,
+              0.7
+            ],
+            "pole": [
+              -0.44,
+              -0.22,
+              0.94
+            ]
+          },
+          "LeftArm": {
+            "target": [
+              0.24,
+              -0.24,
+              0.76
+            ]
+          },
+          "blade_elevation": -70
+        }
+      ],
+      [
+        1,
+        {}
+      ]
+    ]
+  }
+}

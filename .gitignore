@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+creature-art/AGENTS.md
+ref/
+output/
+*.blend
+*.blend1
+*.glb
+*.lod
+.env

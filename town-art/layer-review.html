@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>墓园城 · 分层高清检查</title>
+<style>body{background:#171b1c;color:#deded5;font:16px system-ui;margin:24px auto;max-width:1400px;padding:0 16px}button,select{font:inherit;background:#303a3a;color:inherit;padding:8px;border:1px solid #677270;border-radius:4px}button{cursor:pointer}canvas{display:block;width:100%;height:auto;background:#111;margin:16px 0}#layers{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:6px}label{display:block}a{color:#c8cfab}.note{color:#adb7b3;line-height:1.6}.map{width:384px;max-width:30%;background:#445044}</style>
+<h1>墓园城 · 分层高清检查</h1>
+<p class="note" id="intro">42 个独立城内图层，保留全部动画帧。背景和 castle 内部使用新生成画面，其余为原图 2 倍放大与轻度锐化。这是素材检查器，不是游戏截图；下方可故意叠放不相容的升级形态，游戏仍由原版配置选择实际形态。</p>
+<button id="empty">清空建筑</button> <button id="basic">基础建筑组合</button> <button id="full">升级建筑组合</button>
+<label><input id="old" type="checkbox">原版空城背景（建筑图层不变）</label>
+<label id="previousLabel" hidden><input id="previous" type="checkbox">对照上一版建筑（相同建造组合与特效）</label>
+<label><input id="animate" type="checkbox" checked>播放原有特效帧</label>
+<canvas width="1600" height="748" id="town"></canvas><p id="status" role="status">加载图层…</p><div id="layers"></div>
+<h2>大地图三种形态</h2><p class="note">这一版保留原图轮廓、阴影与归属色遮罩，做保守放大；此前带假棋盘格的生成图没有装入资源包。</p><div id="maps"></div>
+<p><a href="manifest.json">资源和帧清单</a> · <a href="prompts.md">生成提示词</a></p>
+<script>
+(async()=>{
+const [town,layers,maps,empty,basic,full,old,animate,status]=['town','layers','maps','empty','basic','full','old','animate','status'].map(id=>document.getElementById(id));
+const m=await(await fetch('manifest.json')).json(), ctx=town.getContext('2d'), images={};
+if(m.buildingRefinement)document.getElementById('intro').textContent='42 个城内图层的静态部分均已加入生成细节，保留原透明轮廓及 58 张特效叠加帧。此页是素材检查器，可故意叠放不相容形态；实际建造、升级和点击仍由游戏原配置控制。';
+const get=async p=>{let i=new Image;i.src=p;await i.decode();return i};
+const bg=await get('mod/content/data2x/TBNCBACK.png'), original=await get('background-original.png');
+await Promise.all(m.structures.map(async s=>{images[s.name]=await Promise.all(Array.from({length:s.groups['0']},(_,i)=>get(`mod/content/sprites2x/necropolis/${s.resource}/0_${i}.png`)))}));
+const previous=document.getElementById('previous'), before={};
+if(m.buildingRefinement){await Promise.all(m.buildingRefinement.map(async r=>{const s=m.structures.find(s=>s.name===r.name);before[r.name]=await get(`before/${s.resource}.png`)}));document.getElementById('previousLabel').hidden=false;}
+const checks={};for(const s of m.structures){let label=document.createElement('label'),c=document.createElement('input');c.type='checkbox';label.append(c,` ${s.name} (${s.groups['0']} 帧)`);layers.append(label);checks[s.name]=c;}
+const common=['extraAnimation','tavern','shipyard','marketplace','blacksmith','special1','special2','special3','extraTownHall','extraCityHall','extraCapitol'];
+const preset=up=>{let chosen=[...common,up?'castle':'fort',up?'capitol':'villageHall',up?'mageGuild5':'mageGuild1',...(up?['resourceSilo','grail']:[]),...Array.from({length:7},(_,i)=>`dwelling${up?'Up':''}Lvl${i+1}`)];for(const [n,c]of Object.entries(checks))c.checked=chosen.includes(n)};
+empty.onclick=()=>Object.values(checks).forEach(c=>c.checked=false);basic.onclick=()=>preset(false);full.onclick=()=>preset(true);preset(true);
+const sorted=[...m.structures].sort((a,b)=>(a.z||0)-(b.z||0));
+function draw(t){ctx.clearRect(0,0,1600,748);ctx.drawImage(old.checked?original:bg,0,0,1600,748);let count=0;for(const s of sorted)if(checks[s.name].checked){let a=images[s.name];ctx.drawImage(previous.checked&&before[s.name]?before[s.name]:a[0],s.x*2,s.y*2);let frame=animate.checked?Math.floor(t/150)%a.length:0;if(frame)ctx.drawImage(a[frame],s.x*2,s.y*2);count++}status.textContent=`显示 ${count} / 42 个图层 · 1600 × 748 · 同 z 值顺序仅供参考`;requestAnimationFrame(draw)}requestAnimationFrame(draw);
+for(const s of m.map){let c=document.createElement('canvas');c.width=c.height=384;c.className='map';c.title=s.name;maps.append(c);let x=c.getContext('2d');for(const suffix of ['-shadow',''])x.drawImage(await get(`mod/content/sprites2x/necropolis/${s.resource}/0_0${suffix}.png`),0,0);}
+})().catch(e=>{document.getElementById('status').textContent='加载失败：'+e.message;console.error(e)});
+</script></html>

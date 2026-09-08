@@ -92,6 +92,21 @@ blender -b --python-exit-code 1 --python creature-art/render_portrait.py -- \
   --out "$ART_WORKSPACE/portraits/character.png"
 ```
 
+For a newly generated mesh without a reviewed Blender scene:
+
+```sh
+blender -b --python-exit-code 1 --python creature-art/bootstrap_portrait.py -- \
+  --model "$ART_WORKSPACE/mesh/character.glb" \
+  --out "$ART_WORKSPACE/inspection-01"
+```
+
+This saves a packed inspection scene and renders the supplied pose, without
+claiming that the model is animation-ready. Use `--azimuth`, `--elevation`,
+`--width`, `--height` and `--fill` to inspect broad wings or unusual silhouettes.
+The material setup removes imported emission and unlinked metallic values using
+the existing sprite renderer. The source GLB remains unchanged. Every run needs
+a new output directory and records mesh counts, texture sizes and source hashes.
+
 This re-renders the scene at 1400x1600 without overwriting the source. Native frame
 counts and canvas sizes must remain those of the original creature. Higher review
 fps is not the game's animation timing. Never package an appearance-rejected or

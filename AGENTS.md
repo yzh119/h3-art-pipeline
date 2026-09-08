@@ -11,7 +11,8 @@ Use `creature-art/AGENTS.md` (local ignored handoff) for current asset/job statu
 - Reopen editable scenes and verify native frame counts and relevant constraints.
   Numerical checks do not imply user appearance acceptance.
 - Blogs live in `/Users/zhye/yzh119.github.io`, follow its local CLAUDE.md, and
-  publication is authorized. New titles use [AI] without opus -> astra. Mark
+  publication is authorized. All titles use [AI]; retain opus -> astra only in the first migration post
+  skeleton-rig-study, emphasizing the striking improvement there. Mark
   superseded historical statements with strikethrough and dated corrections;
   never delete the earlier narrative. Include high-resolution static Blender
   stills, distinctly captioned from concept art. Keep failed attempts documented.

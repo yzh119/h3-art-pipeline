@@ -68,10 +68,14 @@ Never put the key in a config or commit. A typical request is:
   --out "$ART_WORKSPACE/mesh/rigged"
 ```
 
-`rig_mesh.py --resume` reuses its persisted task ID. `gen_mesh.py` records a pending
-task but does not yet have a resume CLI: do not blindly rerun a paid mesh request
-when only polling/download failed. The requested polygon count is not the actual
-imported face count. Inspect returned geometry, textures, hands and held props.
+Both `rig_mesh.py --resume` and `gen_mesh.py --resume` reuse persisted task IDs.
+The mesh tool rejects an existing output or an accidental second submission to
+the same prefix. Resume checks the source image hash and restores the submitted
+parameters. `gen_mesh.py --no-remesh` retains detailed triangular geometry;
+inspect actual face counts before rigging. The Meshy rigging task-ID path has a
+300,000-face limit, so a dense source may require local simplification and rig
+transfer. See [Meshy's rigging documentation](https://docs.meshy.ai/en/api/rigging).
+Inspect returned geometry, textures, hands and held props.
 
 Footless/flying/nonhuman models need an appropriate local rig instead of the
 humanoid auto-rig. Existing character scripts describe the particular mesh they

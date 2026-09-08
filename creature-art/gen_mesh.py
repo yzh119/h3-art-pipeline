@@ -92,6 +92,8 @@ def main(argv=None):
     parser.add_argument("--topology", default="quad", choices=["quad", "triangle"],
                         help="quad deforms better once rigged (default)")
     parser.add_argument("--no-texture", action="store_true")
+    parser.add_argument("--no-remesh", action="store_true", help="Keep the detailed triangular reconstruction")
+    parser.add_argument("--resume", action="store_true", help="Poll/download the persisted task without submitting")
     parser.add_argument("--no-image-enhancement", action="store_true", help="preserve an already reviewed concept")
     parser.add_argument("--texture-resolution", choices=["2k", "4k", "8k"], default="2k")
     parser.add_argument("--no-crop", action="store_true", help="send the frame as-is")
@@ -102,15 +104,26 @@ def main(argv=None):
     if not key:
         parser.error("MESHY_API_KEY is not set")
 
+    pending = args.out.with_suffix(".pending.json")
+    if args.out.with_suffix("." + args.format).exists():
+        parser.error("Output model already exists")
+    if pending.exists() and not args.resume:
+        parser.error("Task already submitted; use --resume")
+    if args.resume and not pending.exists():
+        parser.error("No pending task to resume")
+
     payload = {
-        "image_url": to_data_uri(args.image, crop=not args.no_crop),
         "ai_model": args.model,
-        "should_remesh": True,
+        "should_remesh": not args.no_remesh,
         "topology": args.topology,
         "target_polycount": args.polycount,
         "should_texture": not args.no_texture,
 
     }
+
+    if args.no_remesh:
+        payload.pop("topology")
+        payload.pop("target_polycount")
 
     if args.model == "meshy-5":
         if args.no_image_enhancement or args.texture_resolution != "2k":
@@ -119,14 +132,23 @@ def main(argv=None):
         payload["texture_resolution"] = args.texture_resolution
         payload["image_enhancement"] = not args.no_image_enhancement
 
-    print("submitting %s ..." % args.image, flush=True)
-    task_id = request(API, key, payload)["result"]
-    print("  task %s" % task_id, flush=True)
-    args.out.parent.mkdir(parents=True, exist_ok=True)
-    args.out.with_suffix(".pending.json").write_text(json.dumps({
-        "task_id": task_id, "source_sha256": hashlib.sha256(Path(args.image).read_bytes()).hexdigest(),
-        "parameters": {k: v for k, v in payload.items() if k != "image_url"}
-    }, indent=2) + "\n")
+    if args.resume:
+        record = json.loads(pending.read_text())
+        if hashlib.sha256(Path(args.image).read_bytes()).hexdigest() != record["source_sha256"]:
+            parser.error("Resume image differs from the submitted source")
+        task_id = record["task_id"]
+        payload = record["parameters"]
+    else:
+        payload["image_url"] = to_data_uri(args.image, crop=not args.no_crop)
+        print("submitting %s ..." % args.image, flush=True)
+        task_id = request(API, key, payload)["result"]
+        print("  task %s" % task_id, flush=True)
+        args.out.parent.mkdir(parents=True, exist_ok=True)
+        pending.write_text(json.dumps({
+            "task_id": task_id,
+            "source_sha256": hashlib.sha256(Path(args.image).read_bytes()).hexdigest(),
+            "parameters": {k: v for k, v in payload.items() if k != "image_url"}
+        }, indent=2) + "\n")
     task = poll(task_id, key)
 
     args.out.parent.mkdir(parents=True, exist_ok=True)

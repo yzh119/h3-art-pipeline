@@ -6,6 +6,7 @@ sprite export, town layers, effects and validation live here rather than inside
 the engine repository.
 
 - [Creature tools](creature-art/README.md) and [current Lich workflow](creature-art/docs/necropolis-liches.md)
+- [Vampire workflow](creature-art/docs/necropolis-vampires.md)
 - [Town tools](town-art/README.md)
 - [Reproduce the workflow](docs/REPRODUCING.md)
 - [Project articles](https://yzh119.github.io/zh/series/英雄无敌3/)

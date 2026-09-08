@@ -12,7 +12,7 @@ the engine repository.
 
 ## Setup
 
-Python 3.9 or later, Blender (tested with5.2.1), and ffmpeg for video previews.
+Python 3.9 or later, Blender (tested with 5.2.1), and ffmpeg for video previews.
 The Python environment needs Pillow and NumPy; Blender uses its own Python.
 
 ```sh

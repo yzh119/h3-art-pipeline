@@ -6,6 +6,29 @@ scenes. The blog shows the art and records failed attempts. Generative requests
 can return different geometry for the same prompt; saved hashes identify the
 particular local source an animation was authored against.
 
+## Starting with an AI coding assistant
+
+Clone this repository, open it in your coding assistant, and provide your local
+paths and the creature you want to work on. This starter task is reusable:
+
+> Read AGENTS.md, this reproduction guide, and the relevant character study.
+> My Heroes III data is at `<H3_DATA>` and outputs belong in `<ART_WORKSPACE>`.
+> Work on `<CREATURE>` using its original frame counts and movement reference.
+> First inspect available local models and saved scenes. Reuse existing API task
+> metadata instead of submitting duplicate jobs. Record any new request, prompt,
+> parameters and source hashes in the external workspace.
+> Produce a pose review before a full animation export. Inspect hands, equipment,
+> silhouettes and floor contact; adapt mesh-specific landmarks when necessary.
+> Preserve editable scenes, export native-count frames, then validate the local
+> mod. Report what was verified and what still needs visual review. Keep images,
+> models, game data and credentials outside the public repository.
+
+Start with a single creature. The [Lich study](../creature-art/docs/necropolis-liches.md),
+[ghost study](../creature-art/docs/necropolis-ghosts.md), and
+[skeleton motion study](../creature-art/docs/skeleton-motion.md) record different
+rigging approaches and their checks. Their historical source snapshots describe
+specific generated meshes; the tools are not a universal automatic character rig.
+
 ## Local environment and reference data
 
 Install Blender and ffmpeg, then create the Python environment from the root:
@@ -69,7 +92,7 @@ blender -b --python-exit-code 1 --python creature-art/render_portrait.py -- \
   --out "$ART_WORKSPACE/portraits/character.png"
 ```
 
-This re-renders the scene at1400x1600 without overwriting the source. Native frame
+This re-renders the scene at 1400x1600 without overwriting the source. Native frame
 counts and canvas sizes must remain those of the original creature. Higher review
 fps is not the game's animation timing. Never package an appearance-rejected or
 incomplete probe as a finished replacement.
@@ -77,7 +100,7 @@ incomplete probe as a finished replacement.
 ## Assemble and validate locally
 
 `new_creature_mod.py` scaffolds native-count resources. `roster_mod.py` appends
-complete exports to a copied local mod, derives1x from2x, and prebakes shadows and
+complete exports to a copied local mod, derives 1x from 2x, and prebakes shadows and
 hover outlines. `stabilize_shadows.py` provides the current fixed-ground effect
 implementation without a compiled engine dependency.
 

@@ -22,6 +22,7 @@ def main():
     p.add_argument('--unit',action='append',required=True,help='CWIGHT=EXPORT_DIRECTORY=Display name')
     p.add_argument('--out',type=Path,required=True)
     p.add_argument('--title',required=True)
+    p.add_argument('--panel-top',type=int,default=310,help='Fixed showcase crop top in 2x canvas pixels')
     args=p.parse_args()
     if args.out.exists():raise ValueError('Use a fresh preview directory')
     args.out.mkdir(parents=True)
@@ -34,9 +35,9 @@ def main():
         folder=args.mod/'content/Sprites2x/creatures'/cid.lower()
         def composite(name,wide=False):
             # Both are fixed crops. No per-frame recentering or resizing.
-            box=(200,250,700,650) if wide else (300,310,500,570)
+            box=(200,250,700,650) if wide else (300,args.panel_top,500,args.panel_top+260)
             canvas=Image.new('RGBA',(900,800),(45,49,54,255))
-            if not wide:canvas.alpha_composite(background,(300,310))
+            if not wide:canvas.alpha_composite(background,(300,args.panel_top))
             for suffix in ['-shadow','']:
                 image=Image.open(folder/(name+suffix+'.png')).convert('RGBA')
                 canvas.alpha_composite(image)

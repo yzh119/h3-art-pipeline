@@ -37,9 +37,11 @@ def main():
     p.add_argument('--lod',type=Path,required=True)
     p.add_argument('--unit',action='append',required=True,help='CWSKEL=EXPORT_DIRECTORY=267')
     p.add_argument('--version',required=True)
+    p.add_argument('--motion-check',action='append',default=[],help='CREATURE=REOPENED_CHECK_JSON')
     args=p.parse_args()
     if args.out.exists():raise ValueError('Output must be new')
     shutil.copytree(args.source_mod,args.out)
+    checks=dict(x.split('=',1) for x in args.motion_check)
     report={'toolSHA256':digest(Path(__file__)),'shadowToolSHA256':digest(Path(__file__).with_name('stabilize_shadows.py')),
             'units':[]}
     for spec in args.unit:
@@ -47,6 +49,12 @@ def main():
         export=json.loads((directory/'manifest.json').read_text())
         if export.get('previewOnly') or export.get('artisticallyRejected'):
             raise ValueError(f'Incomplete or rejected appearance export: {directory}')
+        if creature in checks:
+            checked=json.loads(Path(checks[creature]).read_text())
+            if checked['largeStretchedEdges'] or checked['sourceManifestSHA256']!=digest(directory/'manifest.json'):raise ValueError('Missing or stale deformation check')
+            for sample in checked['samples']:
+                scene=directory/(sample['group'].lower()+'.blend')
+                if digest(scene)!=sample['sceneSHA256'] or sample['minimumZ']<-.002:raise ValueError('Changed scene or ground penetration')
         layout,canvas,skipped=layout_from_def(args.lod,creature)
         config=build_animation(creature,layout,'creatures/'+creature.lower()+'/',0,False)
         unit={'creature':creature,'sourceManifestSHA256':digest(directory/'manifest.json'),
@@ -61,6 +69,8 @@ def main():
             for i in range(count):
                 name=GROUP_NAMES[gid].lower()+'_%02d'%i
                 source=directory/'sprites2x'/(name+'.png')
+                entry=export['clips'][GROUP_NAMES[gid]]['frames'][i]
+                if len(export['clips'][GROUP_NAMES[gid]]['frames'])!=count or digest(source)!=entry['sha256']:raise ValueError('Frame count/hash mismatch')
                 body=Image.open(source).convert('RGBA')
                 if body.size!=(canvas[0]*2,canvas[1]*2):raise ValueError(f'Wrong canvas: {source}')
                 bbox=body.getchannel('A').getbbox()

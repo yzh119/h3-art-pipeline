@@ -1,0 +1,12 @@
+"""Check reopened deformation at every native sample and interval midpoint."""
+import argparse,json,math,hashlib,sys
+from pathlib import Path
+import bpy,numpy as np
+p=argparse.ArgumentParser(description=__doc__);p.add_argument('--source',type=Path,required=True);p.add_argument('--out',type=Path,required=True);a=p.parse_args(sys.argv[sys.argv.index('--')+1:]);assert not a.out.exists();manifest=json.loads((a.source/'manifest.json').read_text());reports=[]
+for name,clip in manifest['clips'].items():
+ path=a.source/(name.lower()+'.blend');bpy.ops.wm.open_mainfile(filepath=str(path));scene=bpy.context.scene;obj=scene.objects['Mesh_0'];mesh=obj.data;rest=np.array([tuple(v.co) for v in mesh.vertices]);edges=np.array([tuple(e.vertices) for e in mesh.edges]);before=np.linalg.norm(rest[edges[:,0]]-rest[edges[:,1]],axis=1);valid=before>1e-5;frames=[f['frame'] for f in clip['frames']];frames=sorted(set(frames+[(x+y)/2 for x,y in zip(frames,frames[1:])]))
+ bad=0;maxratio=0;floor=1e9;maximum_growth=0
+ for frame in frames:
+  scene.frame_set(math.floor(frame),subframe=frame%1);evaluated=obj.evaluated_get(bpy.context.evaluated_depsgraph_get());posed=evaluated.to_mesh();coords=np.empty(len(posed.vertices)*3);posed.vertices.foreach_get('co',coords);coords=coords.reshape(-1,3);evaluated.to_mesh_clear();assert np.isfinite(coords).all();after=np.linalg.norm(coords[edges[:,0]]-coords[edges[:,1]],axis=1);ratio=after[valid]/before[valid];growth=after[valid]-before[valid];bad+=int(((ratio>8)&(growth>.08)).sum());maxratio=max(maxratio,float(ratio.max()));maximum_growth=max(maximum_growth,float(growth.max()));world=np.array(obj.matrix_world);worldZ=coords@world[2,:3]+world[2,3];floor=min(floor,float(worldZ.min()))
+ reports.append({'group':name,'sceneSHA256':hashlib.sha256(path.read_bytes()).hexdigest(),'samples':len(frames),'largeStretchedEdges':bad,'maximumEdgeRatio':maxratio,'maximumEdgeGrowth':maximum_growth,'minimumZ':floor})
+report={'sourceManifestSHA256':hashlib.sha256((a.source/'manifest.json').read_bytes()).hexdigest(),'samples':reports,'largeStretchedEdges':sum(r['largeStretchedEdges'] for r in reports),'scope':'native frames and midpoints; large-tear detection is not aesthetic acceptance'};a.out.write_text(json.dumps(report,indent=2)+'\n');print(json.dumps({'groups':len(reports),'samples':sum(r['samples'] for r in reports),'largeStretchedEdges':report['largeStretchedEdges']}));assert not report['largeStretchedEdges']

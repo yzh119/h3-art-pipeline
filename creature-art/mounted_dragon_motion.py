@@ -159,6 +159,9 @@ def main():
  camera=scene.camera;camera.rotation_euler=(math.radians(78),0,math.radians(315));camera.location=Vector((0,0,.85))+camera.rotation_euler.to_matrix()@Vector((0,0,10));camera.data.ortho_scale=5;camera.data.shift_x=0;camera.data.shift_y=0
  ref=next(r for r in json.loads(a.references.read_text()) if r['name']==a.variant);height=(ref['bbox'][3]-ref['bbox'][1])*2;pose(arm,mesh,specs,segments,dragon,'HOLDING',0);render.calibrate_camera(camera,(900,800),534,height,str(a.out/'calibration.png'));camera.data.shift_x+=50/900
  scene.render.fps=30;bpy.ops.file.pack_all();report={'variant':a.variant,'previewOnly':a.probe,'sourceSHA256':digest(a.source),'landmarks':specs,'clips':{},'checks':{}}
+ if not dragon:
+  report['artisticallyRejected']=True
+  report['requiredRepair']='repair_knight_attacks.py: fused weapon binding and missing mounted attack poses'
  chosen={'HOLDING','MOVING','ATTACK_FRONT','DEATH','MOVE_START','MOVE_END'}
  for gid,count in ref['groups'].items():
   if int(gid) not in GROUP_NAMES:continue

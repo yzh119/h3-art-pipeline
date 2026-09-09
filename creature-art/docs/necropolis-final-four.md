@@ -1,6 +1,58 @@
 # Mounted knights and skeletal dragons
 
-## Animation delivery 0.12.0
+## Mounted attack and panel correction, 0.12.1
+
+In-game feedback rejected the 0.12.0 mounted attacks. The horse barely moved,
+while reducing arm excursions hid skin problems and also erased the attack.
+The saber selector missed its curved tip and mixed weapon weights into the horse
+and rider boot. Keep the rejected probes for visual comparison.
+
+`repair_knight_attacks.py` removes the fused right-arm/blade surfaces and builds
+articulated armor, a gauntlet, guard and rigid curved saber. All knight clips use
+this geometry. Non-attack motion is retained; attacks now rear over the hind
+hooves, raise the sword, lean into a cut and recover. The small former weapon/boot
+contact region receives local weight relaxation. Meshy still supplies the horse
+and remaining rider; no new service call is required.
+
+Continue the legacy seed workflow below with:
+
+```sh
+blender --background --python creature-art/repair_knight_attacks.py -- --source "$ART_WORK/supported" --out "$ART_WORK/knight-scenes" --no-render
+blender --background --python creature-art/check_nonhumanoid_motion.py -- --source "$ART_WORK/knight-scenes" --out "$ART_WORK/scene-check.json"
+blender --background --python creature-art/render_saved_creature.py -- --source "$ART_WORK/knight-scenes" --out "$ART_WORK/knight-final" --check "$ART_WORK/scene-check.json"
+blender --background --python creature-art/check_nonhumanoid_motion.py -- --source "$ART_WORK/knight-final" --out "$ART_WORK/knight-final-check.json"
+```
+
+A broader initial surface selector damaged waist cloth and left a crude faceted
+shoulder. Final selectors follow the arm segments and curved blade, retaining
+the original textured shoulder plate. These failed static renders are retained
+alongside the earlier fused-weapon probe.
+
+`--no-render` stages scenes with an incomplete-export flag. The separate renderer
+requires matching scene/manifest hashes and a passing deformation/ground check,
+then renders the saved poses without reauthoring them.
+
+`--probe` renders only the forward attack and marks the export incomplete.
+`--no-skin` is solely for existing exports with the reconstructed arm; it repairs
+an early fallback-weight defect without reconstructing that geometry again.
+The legacy generator marks its knight seeds rejected until this repair is run.
+
+`roster_mod.py --replace-existing` replaces only explicitly named creature
+resources, including removing their stale higher-scale caches. Unrelated files
+must remain byte-identical. Rebuild those caches before installation. Original
+frame counts remain 13 groups/86 frames for Black Knight and 16/119 for Dread.
+
+VCMI `CCreaturePic` crops double-wide creatures at logical x=170, versus x=150
+for single-wide units. The previous offline gallery wrongly used the single-wide
+crop for these four creatures. `roster_preview.py --double-wide CBLORD` (repeat for
+each relevant unit) reproduces the real crop. Bone Dragon and Dread Knight were
+centered near x=30 in their 100-pixel panels. `offset_animation.py --offset-x 20`
+shifts their bodies, shadows and outlines to center near x=50, preserving every
+visible pixel at every scale. This also translates battle sprites; no separate
+panel-offset setting exists in this engine path. Their new canvas centers are
+close to the original double-wide sprite centers. Do not describe this as UI-only.
+
+## Historical animation delivery 0.12.0
 
 All four units are now
 installed: 13/16/13/13 groups and 86/119/78/82 body frames, respectively. Native

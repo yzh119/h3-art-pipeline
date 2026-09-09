@@ -37,6 +37,7 @@ def main():
     p.add_argument('--lod',type=Path,required=True)
     p.add_argument('--unit',action='append',required=True,help='CWSKEL=EXPORT_DIRECTORY=267')
     p.add_argument('--version',required=True)
+    p.add_argument('--replace-existing',action='store_true',help='Replace only the explicitly listed creature resources; preserve all other files')
     p.add_argument('--motion-check',action='append',default=[],help='CREATURE=REOPENED_CHECK_JSON')
     args=p.parse_args()
     if args.out.exists():raise ValueError('Output must be new')
@@ -44,6 +45,7 @@ def main():
     checks=dict(x.split('=',1) for x in args.motion_check)
     report={'toolSHA256':digest(Path(__file__)),'shadowToolSHA256':digest(Path(__file__).with_name('stabilize_shadows.py')),
             'units':[]}
+    replaced_paths=set()
     for spec in args.unit:
         creature,directory,ground=spec.split('=');creature=creature.upper();directory=Path(directory);ground=float(ground)
         export=json.loads((directory/'manifest.json').read_text())
@@ -57,6 +59,17 @@ def main():
                 if digest(scene)!=sample['sceneSHA256'] or sample['minimumZ']<-.002:raise ValueError('Changed scene or ground penetration')
         layout,canvas,skipped=layout_from_def(args.lod,creature)
         config=build_animation(creature,layout,'creatures/'+creature.lower()+'/',0,False)
+        if args.replace_existing:
+            for scale_folder in ['Sprites','Sprites2x','Sprites3x','Sprites4x']:
+                folder=args.out/'content'/scale_folder
+                target=folder/(creature+'.json')
+                if not target.exists():continue
+                previous=json.loads(target.read_text())
+                if previous['basepath']!=config['basepath']:raise ValueError('Unexpected existing creature basepath')
+                resources=folder/config['basepath']
+                replaced_paths.add(str(target.relative_to(args.out)))
+                replaced_paths.update(str(p.relative_to(args.out)) for p in resources.rglob('*') if p.is_file())
+                target.unlink();shutil.rmtree(resources)
         unit={'creature':creature,'sourceManifestSHA256':digest(directory/'manifest.json'),
               'ground':ground,'groups':layout,'canvas':canvas,'files':[]}
         for scale in [1,2]:
@@ -94,11 +107,13 @@ def main():
                         unit['files'].append({'file':str(target.relative_to(args.out)),'sha256':digest(target)})
         report['units'].append(unit)
     for source in args.source_mod.rglob('*'):
+        if str(source.relative_to(args.source_mod)) in replaced_paths:continue
         if source.is_file() and digest(source)!=digest(args.out/source.relative_to(args.source_mod)):
             raise ValueError(f'Existing mod file changed: {source}')
     metadata=args.out/'mod.json';config=json.loads(metadata.read_text());config['version']=args.version
     config['description']='Necropolis creature graphics with native animation groups, precomputed stable-ground effects, registered canvases, and HD showcase backgrounds.'
     metadata.write_text(json.dumps(config,indent=2)+'\n')
+    report['replacedResourcePaths']=sorted(replaced_paths)
     (args.out/('roster-provenance-'+args.version+'.json')).write_text(json.dumps(report,indent=2)+'\n')
     print(json.dumps({'addedCreatures':[u['creature'] for u in report['units']],
                       'bodyFrames':sum(sum(u['groups'].values())*2 for u in report['units'])}))

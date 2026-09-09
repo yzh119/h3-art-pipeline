@@ -19,6 +19,7 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--source',type=Path,required=True);p.add_argument('--out',type=Path,required=True)
     p.add_argument('--frame',type=float,default=1);p.add_argument('--width',type=int,default=1400);p.add_argument('--height',type=int,default=1600)
+    p.add_argument('--samples',type=int,default=64)
     args=p.parse_args(sys.argv[sys.argv.index('--')+1:])
     if args.out.exists():raise ValueError('Portrait output already exists')
     source_hash=hashlib.sha256(args.source.read_bytes()).hexdigest()
@@ -34,7 +35,7 @@ def main():
     aspect=args.width/args.height
     camera.data.ortho_scale=max(hi.y-lo.y,(hi.x-lo.x)/aspect)*1.12*max(1,aspect)
     scene.render.resolution_x=args.width;scene.render.resolution_y=args.height;scene.render.resolution_percentage=100
-    scene.render.threads_mode='FIXED';scene.render.threads=4;scene.cycles.samples=64;scene.cycles.use_animated_seed=False
+    scene.render.threads_mode='FIXED';scene.render.threads=4;scene.cycles.samples=args.samples;scene.cycles.use_animated_seed=False
     args.out.parent.mkdir(parents=True,exist_ok=True);render.render_to(str(args.out))
     box=render.measure_alpha_bbox(str(args.out))
     if not box or min(box[:2])<=0 or box[2]>=args.width or box[3]>=args.height:raise ValueError('Empty or clipped portrait')

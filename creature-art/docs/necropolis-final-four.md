@@ -52,6 +52,16 @@ visible pixel at every scale. This also translates battle sprites; no separate
 panel-offset setting exists in this engine path. Their new canvas centers are
 close to the original double-wide sprite centers. Do not describe this as UI-only.
 
+## Panel correction completed, 0.12.2
+
+The same +20 logical-pixel translation now covers Black Knight (`CBKNIG`) and
+Ghost Dragon (`CHDRGN`). Dread Knight and Bone Dragon retain their existing
+0.12.1 offsets; do not apply a second shift. All four holding silhouettes center
+within 0.25 logical pixels of x=50 in the real double-wide panel, measured using
+alpha >16. All 1×/2×/3× body, shadow and outline PNGs retain their visible pixels.
+The additional two passes translate 573 and 543 PNGs respectively. Package
+validation has zero errors and warnings; models and animation timing are unchanged.
+
 ## Historical animation delivery 0.12.0
 
 All four units are now

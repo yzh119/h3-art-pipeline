@@ -1,0 +1,146 @@
+[
+  {
+    "frame": 0,
+    "prompt": "Repaint the first-level Necropolis mage guild as detailed gothic fantasy architectural art, preserving its one-level silhouette and original landscape composition."
+  },
+  {
+    "frame": 1,
+    "prompt": "Use case: style-transfer. Asset: Necropolis town building thumbnail. Repaint image 1 into crisp highly detailed dark fantasy architectural art, matching the material style of image 2. Image 1 alone determines geometry, tier, composition, view and surrounding terrain. Subject: Mage Guild level 2: exactly two stepped rectangular stone library tiers. Preserve its identifiable silhouette and tier differences; do not copy the building from image 2. Refined blue-grey weathered carved stone, rocky barren brown terrain, dark overcast sky where present. Clear silhouette and readable moderate contrast at small game UI size. Landscape 15:7, entire original composition, no text, frames, watermarks or interface. Add real detail, no pixel noise."
+  },
+  {
+    "frame": 2,
+    "prompt": "Use case: style-transfer. Asset: Necropolis town building thumbnail. Repaint image 1 into crisp highly detailed dark fantasy architectural art, matching the material style of image 2. Image 1 alone determines geometry, tier, composition, view and surrounding terrain. Subject: Mage Guild level 3: exactly three stepped stone tiers. Preserve its identifiable silhouette and tier differences; do not copy the building from image 2. Refined blue-grey weathered carved stone, rocky barren brown terrain, dark overcast sky where present. Clear silhouette and readable moderate contrast at small game UI size. Landscape 15:7, entire original composition, no text, frames, watermarks or interface. Add real detail, no pixel noise."
+  },
+  {
+    "frame": 3,
+    "prompt": "Use case: style-transfer. Asset: Necropolis town building thumbnail. Repaint image 1 into crisp highly detailed dark fantasy architectural art, matching the material style of image 2. Image 1 alone determines geometry, tier, composition, view and surrounding terrain. Subject: Mage Guild level 4: exactly four stepped stone tiers. Preserve its identifiable silhouette and tier differences; do not copy the building from image 2. Refined blue-grey weathered carved stone, rocky barren brown terrain, dark overcast sky where present. Clear silhouette and readable moderate contrast at small game UI size. Landscape 15:7, entire original composition, no text, frames, watermarks or interface. Add real detail, no pixel noise."
+  },
+  {
+    "frame": 4,
+    "prompt": "Use case: style-transfer. Asset: Necropolis town building thumbnail. Repaint image 1 into crisp highly detailed dark fantasy architectural art, matching the material style of image 2. Image 1 alone determines geometry, tier, composition, view and surrounding terrain. Subject: Mage Guild level 5: five tapering stacked stone tiers topped by a small sculpted pinnacle. Preserve its identifiable silhouette and tier differences; do not copy the building from image 2. Refined blue-grey weathered carved stone, rocky barren brown terrain, dark overcast sky where present. Clear silhouette and readable moderate contrast at small game UI size. Landscape 15:7, entire original composition, no text, frames, watermarks or interface. Add real detail, no pixel noise."
+  },
+  {
+    "frame": 5,
+    "prompt": "Use case: style-transfer. Asset: high-resolution Necropolis building thumbnail. Repaint image 1 as crisp detailed 3D-render-like gothic fantasy art; image 2 is a material/style reference only. Image 1 defines exact subject, camera, composition, building tier and silhouette. Subject: a low rectangular stone tavern set against a rocky hillside, two warm lit doors/windows. Preserve recognizable architecture and tier differences. Keep the whole original scene inside frame, same subject size and placement. Refined blue-grey carved weathered stone, barren brown rocky terrain, restrained dark overcast lighting, readable moderate contrast at thumbnail size. Landscape 15:7 ratio, no text, border, watermark or UI. No pixel noise. Do not copy the structure from image 2."
+  },
+  {
+    "frame": 6,
+    "prompt": "Use case: style-transfer. Asset: high-resolution Necropolis building thumbnail. Repaint image 1 as crisp detailed 3D-render-like gothic fantasy art; image 2 is a material/style reference only. Image 1 defines exact subject, camera, composition, building tier and silhouette. Subject: a dark timber shipyard pier with a sloping ramp and upright posts, no ship. Preserve recognizable architecture and tier differences. Keep the whole original scene inside frame, same subject size and placement. Refined blue-grey carved weathered stone, barren brown rocky terrain, restrained dark overcast lighting, readable moderate contrast at thumbnail size. Landscape 15:7 ratio, no text, border, watermark or UI. No pixel noise. Do not copy the structure from image 2."
+  },
+  {
+    "frame": 7,
+    "prompt": "Use case: style-transfer. Asset: high-resolution Necropolis building thumbnail. Repaint image 1 as crisp detailed 3D-render-like gothic fantasy art; image 2 is a material/style reference only. Image 1 defines exact subject, camera, composition, building tier and silhouette. Subject: a modest stone fort with one squat tall square tower and low wall. Preserve recognizable architecture and tier differences. Keep the whole original scene inside frame, same subject size and placement. Refined blue-grey carved weathered stone, barren brown rocky terrain, restrained dark overcast lighting, readable moderate contrast at thumbnail size. Landscape 15:7 ratio, no text, border, watermark or UI. No pixel noise. Do not copy the structure from image 2."
+  },
+  {
+    "frame": 8,
+    "prompt": "Use case: style-transfer. Asset: high-resolution Necropolis building thumbnail. Repaint image 1 as crisp detailed 3D-render-like gothic fantasy art; image 2 is a material/style reference only. Image 1 defines exact subject, camera, composition, building tier and silhouette. Subject: upgraded stone citadel with added battlements and defenses, preserve exact silhouette. Preserve recognizable architecture and tier differences. Keep the whole original scene inside frame, same subject size and placement. Refined blue-grey carved weathered stone, barren brown rocky terrain, restrained dark overcast lighting, readable moderate contrast at thumbnail size. Landscape 15:7 ratio, no text, border, watermark or UI. No pixel noise. Do not copy the structure from image 2."
+  },
+  {
+    "frame": 9,
+    "prompt": "Use case: style-transfer. Asset: high-resolution Necropolis building thumbnail. Repaint image 1 as crisp detailed 3D-render-like gothic fantasy art; image 2 is a material/style reference only. Image 1 defines exact subject, camera, composition, building tier and silhouette. Subject: fully upgraded castle: taller pointed-roof keep behind fortified stone walls. Preserve recognizable architecture and tier differences. Keep the whole original scene inside frame, same subject size and placement. Refined blue-grey carved weathered stone, barren brown rocky terrain, restrained dark overcast lighting, readable moderate contrast at thumbnail size. Landscape 15:7 ratio, no text, border, watermark or UI. No pixel noise. Do not copy the structure from image 2."
+  },
+  {
+    "frame": 10,
+    "prompt": "Use case: style-transfer. Asset: high-resolution Necropolis building thumbnail. Repaint image 1 as crisp detailed 3D-render-like gothic fantasy art; image 2 is a material/style reference only. Image 1 defines exact subject, camera, composition, building tier and silhouette. Subject: village hall: small dark gothic civic hall with one lit arched doorway. Preserve recognizable architecture and tier differences. Keep the whole original scene inside frame, same subject size and placement. Refined blue-grey carved weathered stone, barren brown rocky terrain, restrained dark overcast lighting, readable moderate contrast at thumbnail size. Landscape 15:7 ratio, no text, border, watermark or UI. No pixel noise. Do not copy the structure from image 2."
+  },
+  {
+    "frame": 11,
+    "prompt": "Use case: style-transfer. Asset: high-resolution Necropolis building thumbnail. Repaint image 1 as crisp detailed 3D-render-like gothic fantasy art; image 2 is a material/style reference only. Image 1 defines exact subject, camera, composition, building tier and silhouette. Subject: town hall: gothic civic hall with a taller stepped facade, preserve stage differences. Preserve recognizable architecture and tier differences. Keep the whole original scene inside frame, same subject size and placement. Refined blue-grey carved weathered stone, barren brown rocky terrain, restrained dark overcast lighting, readable moderate contrast at thumbnail size. Landscape 15:7 ratio, no text, border, watermark or UI. No pixel noise. Do not copy the structure from image 2."
+  },
+  {
+    "frame": 12,
+    "prompt": "Use case: style-transfer. Asset: high-resolution Necropolis building thumbnail. Repaint image 1 as crisp detailed 3D-render-like gothic fantasy art; image 2 is a material/style reference only. Image 1 defines exact subject, camera, composition, building tier and silhouette. Subject: city hall: ornate taller gothic town hall with sloped roof. Preserve recognizable architecture and tier differences. Keep the whole original scene inside frame, same subject size and placement. Refined blue-grey carved weathered stone, barren brown rocky terrain, restrained dark overcast lighting, readable moderate contrast at thumbnail size. Landscape 15:7 ratio, no text, border, watermark or UI. No pixel noise. Do not copy the structure from image 2."
+  },
+  {
+    "frame": 13,
+    "prompt": "Use case: style-transfer. Asset: high-resolution Necropolis building thumbnail. Repaint image 1 as crisp detailed 3D-render-like gothic fantasy art; image 2 is a material/style reference only. Image 1 defines exact subject, camera, composition, building tier and silhouette. Subject: capitol: grand gothic civic hall with tall pointed spire. Preserve recognizable architecture and tier differences. Keep the whole original scene inside frame, same subject size and placement. Refined blue-grey carved weathered stone, barren brown rocky terrain, restrained dark overcast lighting, readable moderate contrast at thumbnail size. Landscape 15:7 ratio, no text, border, watermark or UI. No pixel noise. Do not copy the structure from image 2."
+  },
+  {
+    "frame": 14,
+    "prompt": "Use case: style-transfer. Asset: high-resolution Necropolis building thumbnail. Repaint image 1 as crisp detailed 3D-render-like gothic fantasy art; image 2 is a material/style reference only. Image 1 defines exact subject, camera, composition, building tier and silhouette. Subject: marketplace: two small domed stone trading kiosks with warm lit entrances. Preserve recognizable architecture and tier differences. Keep the whole original scene inside frame, same subject size and placement. Refined blue-grey carved weathered stone, barren brown rocky terrain, restrained dark overcast lighting, readable moderate contrast at thumbnail size. Landscape 15:7 ratio, no text, border, watermark or UI. No pixel noise. Do not copy the structure from image 2."
+  },
+  {
+    "frame": 15,
+    "prompt": "Use case: style-transfer. Asset: high-resolution Necropolis building thumbnail. Repaint image 1 as crisp detailed 3D-render-like gothic fantasy art; image 2 is a material/style reference only. Image 1 defines exact subject, camera, composition, building tier and silhouette. Subject: resource silo beside marketplace: large arched hollow stone silo at left plus domed trading kiosks at right. Preserve recognizable architecture and tier differences. Keep the whole original scene inside frame, same subject size and placement. Refined blue-grey carved weathered stone, barren brown rocky terrain, restrained dark overcast lighting, readable moderate contrast at thumbnail size. Landscape 15:7 ratio, no text, border, watermark or UI. No pixel noise. Do not copy the structure from image 2."
+  },
+  {
+    "frame": 16,
+    "prompt": "Use case: style-transfer. Asset: high-resolution Necropolis building thumbnail. Repaint image 1 as crisp detailed 3D-render-like gothic fantasy art; image 2 is a material/style reference only. Image 1 defines exact subject, camera, composition, building tier and silhouette. Subject: necromancy amplifier: two red stone carved pylons linked by a dark gold-edged altar over cold blue magical light. Preserve recognizable architecture and tier differences. Keep the whole original scene inside frame, same subject size and placement. Refined blue-grey carved weathered stone, barren brown rocky terrain, restrained dark overcast lighting, readable moderate contrast at thumbnail size. Landscape 15:7 ratio, no text, border, watermark or UI. No pixel noise. Do not copy the structure from image 2."
+  },
+  {
+    "frame": 17,
+    "prompt": "Use case: style-transfer. Asset: high-resolution Necropolis building thumbnail. Repaint image 1 as crisp detailed 3D-render-like gothic fantasy art; image 2 is a material/style reference only. Image 1 defines exact subject, camera, composition, building tier and silhouette. Subject: cover of darkness: a very tall narrow carved stone column emitting a cloud of dark smoke at its summit. Preserve recognizable architecture and tier differences. Keep the whole original scene inside frame, same subject size and placement. Refined blue-grey carved weathered stone, barren brown rocky terrain, restrained dark overcast lighting, readable moderate contrast at thumbnail size. Landscape 15:7 ratio, no text, border, watermark or UI. No pixel noise. Do not copy the structure from image 2."
+  },
+  {
+    "frame": 18,
+    "prompt": "Use case: style-transfer. Asset: high-resolution Necropolis building thumbnail. Repaint image 1 as crisp detailed 3D-render-like gothic fantasy art; image 2 is a material/style reference only. Image 1 defines exact subject, camera, composition, building tier and silhouette. Subject: two shallow dark hollows in barren rocky ground, no building; preserve placeholder terrain. Preserve recognizable architecture and tier differences. Keep the whole original scene inside frame, same subject size and placement. Refined blue-grey carved weathered stone, barren brown rocky terrain, restrained dark overcast lighting, readable moderate contrast at thumbnail size. Landscape 15:7 ratio, no text, border, watermark or UI. No pixel noise. Do not copy the structure from image 2."
+  },
+  {
+    "frame": 21,
+    "prompt": "Use case: style-transfer. Asset: high-resolution Necropolis building thumbnail. Repaint image 1 as crisp detailed 3D-render-like gothic fantasy art; image 2 is a material/style reference only. Image 1 defines exact subject, camera, composition, building tier and silhouette. Subject: a tall thin grey and muted red stone column with sculpted cap on rocky hill; preserve reference. Preserve recognizable architecture and tier differences. Keep the whole original scene inside frame, same subject size and placement. Refined blue-grey carved weathered stone, barren brown rocky terrain, restrained dark overcast lighting, readable moderate contrast at thumbnail size. Landscape 15:7 ratio, no text, border, watermark or UI. No pixel noise. Do not copy the structure from image 2."
+  },
+  {
+    "frame": 22,
+    "prompt": "Use case: style-transfer. Asset: high-resolution Necropolis building thumbnail. Repaint image 1 as crisp detailed 3D-render-like gothic fantasy art; image 2 is a material/style reference only. Image 1 defines exact subject, camera, composition, building tier and silhouette. Subject: a shallow rocky excavation containing a pile of pale bones, no tower. Preserve recognizable architecture and tier differences. Keep the whole original scene inside frame, same subject size and placement. Refined blue-grey carved weathered stone, barren brown rocky terrain, restrained dark overcast lighting, readable moderate contrast at thumbnail size. Landscape 15:7 ratio, no text, border, watermark or UI. No pixel noise. Do not copy the structure from image 2."
+  },
+  {
+    "frame": 26,
+    "prompt": "Use case: style-transfer. Asset: high-resolution Necropolis building thumbnail. Repaint image 1 as crisp detailed 3D-render-like gothic fantasy art; image 2 is a material/style reference only. Image 1 defines exact subject, camera, composition, building tier and silhouette. Subject: grail monument: a slender grey stone pedestal surmounted by a golden chalice on barren rocky terrain. Preserve recognizable architecture and tier differences. Keep the whole original scene inside frame, same subject size and placement. Refined blue-grey carved weathered stone, barren brown rocky terrain, restrained dark overcast lighting, readable moderate contrast at thumbnail size. Landscape 15:7 ratio, no text, border, watermark or UI. No pixel noise. Do not copy the structure from image 2."
+  },
+  {
+    "frame": 30,
+    "prompt": "Use case: style-transfer. Asset: Necropolis town building thumbnail. Repaint image 1 into crisp highly detailed dark fantasy architectural art, matching the material style of image 2. Image 1 alone determines geometry, tier, composition, view and surrounding terrain. Subject: Cursed Temple: simple low grey stone classical funerary shrine with a dark pitched roof and arched central doorway, base skeleton dwelling. Preserve its identifiable silhouette and tier differences; do not copy the building from image 2. Refined blue-grey weathered carved stone, rocky barren brown terrain, dark overcast sky where present. Clear silhouette and readable moderate contrast at small game UI size. Landscape 15:7, entire original composition, no text, frames, watermarks or interface. Add real detail, no pixel noise."
+  },
+  {
+    "frame": 31,
+    "prompt": "Use case: style-transfer. Asset: Necropolis town building thumbnail. Repaint image 1 into crisp highly detailed dark fantasy architectural art, matching the material style of image 2. Image 1 alone determines geometry, tier, composition, view and surrounding terrain. Subject: Graveyard: a single rectangular open grave surrounded by low stakes and sparse dead trees, base zombie dwelling. Preserve its identifiable silhouette and tier differences; do not copy the building from image 2. Refined blue-grey weathered carved stone, rocky barren brown terrain, dark overcast sky where present. Clear silhouette and readable moderate contrast at small game UI size. Landscape 15:7, entire original composition, no text, frames, watermarks or interface. Add real detail, no pixel noise."
+  },
+  {
+    "frame": 32,
+    "prompt": "Use case: style-transfer. Asset: high-resolution Necropolis building thumbnail. Repaint image 1 as crisp detailed 3D-render-like gothic fantasy art; image 2 is a material/style reference only. Image 1 defines exact subject, camera, composition, building tier and silhouette. Subject: Tomb of Souls: a tall slender cylindrical ribbed grey stone funerary tower, base ghost dwelling. Preserve recognizable architecture and tier differences. Keep the whole original scene inside frame, same subject size and placement. Refined blue-grey carved weathered stone, barren brown rocky terrain, restrained dark overcast lighting, readable moderate contrast at thumbnail size. Landscape 15:7 ratio, no text, border, watermark or UI. No pixel noise. Do not copy the structure from image 2."
+  },
+  {
+    "frame": 33,
+    "prompt": "Use case: style-transfer. Asset: high-resolution Necropolis building thumbnail. Repaint image 1 as crisp detailed 3D-render-like gothic fantasy art; image 2 is a material/style reference only. Image 1 defines exact subject, camera, composition, building tier and silhouette. Subject: Estate: a low broad grey stone mausoleum with red-brown doors and simple flat stepped roofs, base vampire dwelling. Preserve recognizable architecture and tier differences. Keep the whole original scene inside frame, same subject size and placement. Refined blue-grey carved weathered stone, barren brown rocky terrain, restrained dark overcast lighting, readable moderate contrast at thumbnail size. Landscape 15:7 ratio, no text, border, watermark or UI. No pixel noise. Do not copy the structure from image 2."
+  },
+  {
+    "frame": 34,
+    "prompt": "Use case: style-transfer. Asset: high-resolution Necropolis building thumbnail. Repaint image 1 as crisp detailed 3D-render-like gothic fantasy art; image 2 is a material/style reference only. Image 1 defines exact subject, camera, composition, building tier and silhouette. Subject: Mausoleum: a tapering rectangular grey stone tomb with red inset vertical panels, base lich dwelling. Preserve recognizable architecture and tier differences. Keep the whole original scene inside frame, same subject size and placement. Refined blue-grey carved weathered stone, barren brown rocky terrain, restrained dark overcast lighting, readable moderate contrast at thumbnail size. Landscape 15:7 ratio, no text, border, watermark or UI. No pixel noise. Do not copy the structure from image 2."
+  },
+  {
+    "frame": 35,
+    "prompt": "Use case: style-transfer. Asset: high-resolution Necropolis building thumbnail. Repaint image 1 as crisp detailed 3D-render-like gothic fantasy art; image 2 is a material/style reference only. Image 1 defines exact subject, camera, composition, building tier and silhouette. Subject: Hall of Darkness: a tall dark narrow gothic tower with two black roof spires, base black knight dwelling. Preserve recognizable architecture and tier differences. Keep the whole original scene inside frame, same subject size and placement. Refined blue-grey carved weathered stone, barren brown rocky terrain, restrained dark overcast lighting, readable moderate contrast at thumbnail size. Landscape 15:7 ratio, no text, border, watermark or UI. No pixel noise. Do not copy the structure from image 2."
+  },
+  {
+    "frame": 36,
+    "prompt": "Use case: style-transfer. Asset: high-resolution Necropolis building thumbnail. Repaint image 1 as crisp detailed 3D-render-like gothic fantasy art; image 2 is a material/style reference only. Image 1 defines exact subject, camera, composition, building tier and silhouette. Subject: Dragon Vault: a massive dark sealed rectangular tomb door carved directly into a steep brown rocky cliff, base bone dragon dwelling. Preserve recognizable architecture and tier differences. Keep the whole original scene inside frame, same subject size and placement. Refined blue-grey carved weathered stone, barren brown rocky terrain, restrained dark overcast lighting, readable moderate contrast at thumbnail size. Landscape 15:7 ratio, no text, border, watermark or UI. No pixel noise. Do not copy the structure from image 2."
+  },
+  {
+    "frame": 37,
+    "prompt": "Use case: style-transfer. Asset: Necropolis town building thumbnail. Repaint image 1 into crisp highly detailed dark fantasy architectural art, matching the material style of image 2. Image 1 alone determines geometry, tier, composition, view and surrounding terrain. Subject: Upgraded Cursed Temple: the upgraded skeleton dwelling, low stone temple with a larger embellished roofline, preserve its reference structure. Preserve its identifiable silhouette and tier differences; do not copy the building from image 2. Refined blue-grey weathered carved stone, rocky barren brown terrain, dark overcast sky where present. Clear silhouette and readable moderate contrast at small game UI size. Landscape 15:7, entire original composition, no text, frames, watermarks or interface. Add real detail, no pixel noise."
+  },
+  {
+    "frame": 38,
+    "prompt": "Use case: style-transfer. Asset: Necropolis town building thumbnail. Repaint image 1 into crisp highly detailed dark fantasy architectural art, matching the material style of image 2. Image 1 alone determines geometry, tier, composition, view and surrounding terrain. Subject: Upgraded Graveyard: open grave with white skeletal remains arranged around it and bare stakes/dead trees; preserve the extra bones. Preserve its identifiable silhouette and tier differences; do not copy the building from image 2. Refined blue-grey weathered carved stone, rocky barren brown terrain, dark overcast sky where present. Clear silhouette and readable moderate contrast at small game UI size. Landscape 15:7, entire original composition, no text, frames, watermarks or interface. Add real detail, no pixel noise."
+  },
+  {
+    "frame": 39,
+    "prompt": "Use case: style-transfer. Asset: high-resolution Necropolis building thumbnail. Repaint image 1 as crisp detailed 3D-render-like gothic fantasy art; image 2 is a material/style reference only. Image 1 defines exact subject, camera, composition, building tier and silhouette. Subject: upgraded Tomb of Souls: tall cylindrical ribbed tower with an added bright sculpted stone base and ornate crown. Preserve recognizable architecture and tier differences. Keep the whole original scene inside frame, same subject size and placement. Refined blue-grey carved weathered stone, barren brown rocky terrain, restrained dark overcast lighting, readable moderate contrast at thumbnail size. Landscape 15:7 ratio, no text, border, watermark or UI. No pixel noise. Do not copy the structure from image 2."
+  },
+  {
+    "frame": 40,
+    "prompt": "Use case: style-transfer. Asset: high-resolution Necropolis building thumbnail. Repaint image 1 as crisp detailed 3D-render-like gothic fantasy art; image 2 is a material/style reference only. Image 1 defines exact subject, camera, composition, building tier and silhouette. Subject: upgraded Estate: broad stone mausoleum with red-brown doors and layered pagoda-like brown roofs. Preserve recognizable architecture and tier differences. Keep the whole original scene inside frame, same subject size and placement. Refined blue-grey carved weathered stone, barren brown rocky terrain, restrained dark overcast lighting, readable moderate contrast at thumbnail size. Landscape 15:7 ratio, no text, border, watermark or UI. No pixel noise. Do not copy the structure from image 2."
+  },
+  {
+    "frame": 41,
+    "prompt": "Use case: style-transfer. Asset: high-resolution Necropolis building thumbnail. Repaint image 1 as crisp detailed 3D-render-like gothic fantasy art; image 2 is a material/style reference only. Image 1 defines exact subject, camera, composition, building tier and silhouette. Subject: upgraded Mausoleum: tapering rectangular grey stone tomb with pale skull relief at the upper front and red inset panel. Preserve recognizable architecture and tier differences. Keep the whole original scene inside frame, same subject size and placement. Refined blue-grey carved weathered stone, barren brown rocky terrain, restrained dark overcast lighting, readable moderate contrast at thumbnail size. Landscape 15:7 ratio, no text, border, watermark or UI. No pixel noise. Do not copy the structure from image 2."
+  },
+  {
+    "frame": 42,
+    "prompt": "Use case: style-transfer. Asset: high-resolution Necropolis building thumbnail. Repaint image 1 as crisp detailed 3D-render-like gothic fantasy art; image 2 is a material/style reference only. Image 1 defines exact subject, camera, composition, building tier and silhouette. Subject: upgraded Hall of Darkness: taller broad dark gothic tower with four black spires and ornate trim. Preserve recognizable architecture and tier differences. Keep the whole original scene inside frame, same subject size and placement. Refined blue-grey carved weathered stone, barren brown rocky terrain, restrained dark overcast lighting, readable moderate contrast at thumbnail size. Landscape 15:7 ratio, no text, border, watermark or UI. No pixel noise. Do not copy the structure from image 2."
+  },
+  {
+    "frame": 43,
+    "prompt": "Use case: style-transfer. Asset: high-resolution Necropolis building thumbnail. Repaint image 1 as crisp detailed 3D-render-like gothic fantasy art; image 2 is a material/style reference only. Image 1 defines exact subject, camera, composition, building tier and silhouette. Subject: upgraded Dragon Vault: giant ribbed tomb portal embedded in a rocky cliff with additional carved stone bones and ornament. Preserve recognizable architecture and tier differences. Keep the whole original scene inside frame, same subject size and placement. Refined blue-grey carved weathered stone, barren brown rocky terrain, restrained dark overcast lighting, readable moderate contrast at thumbnail size. Landscape 15:7 ratio, no text, border, watermark or UI. No pixel noise. Do not copy the structure from image 2."
+  }
+]

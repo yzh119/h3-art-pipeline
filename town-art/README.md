@@ -97,3 +97,48 @@ the prompts to `prompts.md`. Copy each refined resource's previous `0_0.png` to
 `before/<RESOURCE>.png` in the output. The previous/current toggle then compares
 the same selected buildings with identical overlays. Local NumPy 2.0.2 was also
 used to independently audit visible pixel changes, alpha and overlay equality.
+
+## UI thumbnails (independent mod 0.1.0)
+
+`extract_ui_references.py` reads the 44 HALLNECR slots and the Necropolis slots
+58–71 in CPRSMALL/TWCRPORT. Preserve the native index offset: creature IDs are
+not portrait frame indices. HALLNECR is shared by the construction list, building
+details and fort recruitment window. The building frames contain 36 unique images.
+
+```sh
+.venv/bin/python town-art/extract_ui_references.py --lod "$ART_DATA/H3sprite.lod" --out "$ART_WORK/reference"
+```
+
+Generate each unique building separately using the built-in image tool and the
+corresponding local reference. `ui-thumbnail-prompts.json` records the prompts;
+image 2 is the generated first mage guild, used only for material/style consistency.
+Save outputs as `hallnecr-NN.png`. These are generative repaints with some local
+architectural changes, not exact restoration. No additional Meshy jobs are needed.
+
+For portraits, `creature-art/render_ui_portraits.py` opens delivered Blender
+scenes, retains their models/materials/poses and reframes the camera. Its input
+manifest is an array with `name`, `scene`, `upperFraction`, optional `size`,
+`fitWidth` and `centerFraction`. Use the names in `build_ui_thumbnails.py::NAMES`.
+Large masters are 580×640, upperFraction 0.62. Small masters are 320×320,
+upperFraction 0.40, fitWidth false; centerFraction 0.35 for liches, 0.70 for
+dragons and 0.50 otherwise. Each output records scene, tool and PNG hashes.
+Portraits intentionally crop the lower body; do not use full-body clipping checks.
+
+```sh
+blender --background --python creature-art/render_ui_portraits.py -- --manifest "$ART_WORK/portrait-scenes.json" --out "$ART_WORK/portraits"
+blender --background --python creature-art/render_ui_portraits.py -- --manifest "$ART_WORK/small-portrait-scenes.json" --out "$ART_WORK/small-portraits"
+.venv/bin/python town-art/build_ui_thumbnails.py --reference "$ART_WORK/reference" --buildings "$ART_WORK/generated" --portraits "$ART_WORK/portraits" --small-portraits "$ART_WORK/small-portraits" --backdrop "$ART_WORK/CRBKGNEC.png" --out "$ART_WORK/mod"
+```
+
+The pack supplies sparse animation JSON and exact-size 2×/3×/4× PNGs only.
+No 1× DEF, creature config or unrelated faction frame is overridden. Small
+portraits retain alpha; large portraits include the current creature backdrop.
+HALLNECR uses 150×70 logical frames; CPRSMALL 32×32 and TWCRPORT 58×64.
+The assembler reopens all outputs and validates dimensions, paths and indices.
+The 0.1.0 package has 203 physical files. Install privately under `necropolis-ui-hd`
+and enable it in the active VCMI mod preset. Published examples belong in the blog.
+
+Native verification recorded 4× reads for small/large portraits and seven base
+building thumbnails, plus a fort-screen visit. It does not establish manual
+inspection of every slot. UI size and internal asset/render scale are separate;
+a 4× file can still be downsampled when presented in a small on-screen frame.

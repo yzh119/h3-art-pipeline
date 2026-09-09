@@ -1,4 +1,4 @@
-# Battlefields, map towns and font rasterization
+# Battlefields, map towns, adventure-map and font rasterization
 
 Tools only. Supply your own legally obtained H3 data and externally generated images.
 Do not commit extracted references, production artwork, font files or complete mods.
@@ -11,6 +11,8 @@ Run from this repository, using fresh output directories:
 .venv/bin/python environment-art/export_references.py --data "$H3_DATA" --config "$VCMI_REPO/config/battlefields.json" --out "$ART_WORK/references"
 .venv/bin/python environment-art/build_battlefields.py --references "$ART_WORK/references" --generated "$ART_WORK/battle-generated" --out "$ART_WORK/battle-package"
 .venv/bin/python environment-art/build_map.py --data "$H3_DATA" --generated "$ART_WORK/map-generated" --out "$ART_WORK/map-package"
+.venv/bin/python environment-art/build_adventure_assets.py --lod "$H3_SPRITE_LOD" --out "$ART_WORK/adventure-terrain" --scope terrain --scales 2 3 4
+.venv/bin/python environment-art/build_adventure_assets.py --lod "$H3_SPRITE_LOD" --out "$ART_WORK/adventure-objects" --scope objects --prefix AVL --prefix AVX --prefix AVW --scales 2 3 4
 .venv/bin/python environment-art/font_probe.py --fonts "$CHINESE_FONT_DATA" --out "$ART_WORK/font-review" --display-scale 2.72
 ```
 
@@ -42,6 +44,14 @@ not a screenshot. Existing `video.upscalingFilter: "xbrz3"` rasterizes fonts at 
 without changing font families. It affects the whole internal render scale and
 increases memory demand. Existing 2× creature assets do not become new native 3×
 art. Choose a display ratio appropriate to your screen; 2.72 is a local estimate.
+
+`build_adventure_assets.py` preserves each source DEF's full canvas, animation
+groups, frame counts and separate body/shadow/overlay layers. It changes no map
+object template, anchor, visit mask or passability. `AVL` covers scenery and
+terrain obstacles, `AVX` adventure buildings and `AVW` neutral creatures. Keep
+`AVC` out of this pass when towns have a separately registered art treatment.
+The script is a high-quality scaling baseline; use reviewed generated artwork for
+individual landmarks only after preserving the same registration constraints.
 
 Validation distinguishes package checks, native asset-load logs, offline visual
 inspection and user in-game acceptance. Loading a mod does not establish that all

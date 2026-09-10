@@ -38,7 +38,7 @@ def repaint(source, texture, key):
     result = np.empty_like(rgba)
     result[..., :3] = rgb * 255.0
     result[..., 3] = rgba[..., 3]
-    return Image.fromarray(result.astype(np.uint8), "RGBA")
+    return Image.fromarray(result.astype(np.uint8))
 
 
 def main():

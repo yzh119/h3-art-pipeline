@@ -52,6 +52,8 @@ terrain obstacles, `AVX` adventure buildings and `AVW` neutral creatures. Keep
 `AVC` out of this pass when towns have a separately registered art treatment.
 The script is a high-quality scaling baseline; use reviewed generated artwork for
 individual landmarks only after preserving the same registration constraints.
+`register_landmarks.py` fits reviewed transparent artwork into the native body
+bounds and preserves the original canvas, JSON, shadow and overlay layers.
 
 Validation distinguishes package checks, native asset-load logs, offline visual
 inspection and user in-game acceptance. Loading a mod does not establish that all

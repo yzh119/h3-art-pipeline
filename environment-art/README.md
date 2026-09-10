@@ -74,3 +74,8 @@ structural 2×/3×/4× extraction layer.
 python audit_customization.py --mod /path/to/mod --baseline /path/to/baseline \
   --audit /path/to/adventure-objects-source-audit.json --output customization-audit.json
 ```
+
+Use `register_landmarks.py --constrain-native-alpha` when an accepted repaint
+has the right internal material but its generated contour needs to remain
+strictly within the native sprite silhouette. The option keeps the unchanged
+canvas and all non-body layers while clipping the registered body alpha.

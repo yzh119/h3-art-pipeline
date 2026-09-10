@@ -8,7 +8,7 @@ JSON sequences and object template untouched.
 import argparse
 from pathlib import Path
 
-from PIL import Image
+from PIL import Image, ImageChops
 
 
 def alpha_bbox(image, threshold=1):
@@ -21,7 +21,7 @@ def alpha_bbox(image, threshold=1):
     return bbox
 
 
-def fit_landmark(source, native):
+def fit_landmark(source, native, constrain_native_alpha=False):
     source = source.convert("RGBA")
     # Generators occasionally leave near-zero pixels across an otherwise
     # transparent image. Ignore that fringe when locating the new artwork.
@@ -36,6 +36,8 @@ def fit_landmark(source, native):
     x = target_box[0] + (target_width - crop.width) // 2
     y = target_box[3] - crop.height
     result.alpha_composite(crop, (x, y))
+    if constrain_native_alpha:
+        result.putalpha(ImageChops.multiply(result.getchannel("A"), native.getchannel("A")))
     return result
 
 
@@ -50,6 +52,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--mod", type=Path, required=True)
     parser.add_argument("--art", type=parse_source, action="append", required=True)
+    parser.add_argument("--constrain-native-alpha", action="store_true", help="Clip generated pixels to the original body silhouette.")
     args = parser.parse_args()
 
     for stem, filename in args.art:
@@ -61,7 +64,7 @@ def main():
             if not target.is_file():
                 raise ValueError(f"missing native target: {target}")
             native = Image.open(target).convert("RGBA")
-            registered = fit_landmark(source, native)
+            registered = fit_landmark(source, native, args.constrain_native_alpha)
             registered.save(target)
             if registered.size != native.size:
                 raise ValueError(f"changed canvas for {target}")

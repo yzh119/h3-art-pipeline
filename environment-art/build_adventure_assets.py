@@ -24,6 +24,7 @@ import def_extract as defs
 TERRAIN_DEFS = ("DIRTTL", "SANDTL", "GRASTL", "SNOWTL", "SWMPTL", "ROUGTL", "SUBBTL", "ROCKTL")
 ROAD_DEFS = ("DIRTRD", "GRAVRD", "COBBRD")
 RIVER_DEFS = ("ICYRVR",)
+WATER_DEFS = ("WATRTL",)
 EXCLUDED_PREFIXES = ("AVC",)  # Towns have separate registered generated map art.
 
 
@@ -52,8 +53,8 @@ def selected_defs(entries, scope, prefixes):
     if scope == "objects":
         return adventure
     if scope == "terrain":
-        return list(TERRAIN_DEFS + ROAD_DEFS + RIVER_DEFS)
-    return sorted(set(adventure + list(TERRAIN_DEFS + ROAD_DEFS + RIVER_DEFS)))
+        return list(TERRAIN_DEFS + ROAD_DEFS + RIVER_DEFS + WATER_DEFS)
+    return sorted(set(adventure + list(TERRAIN_DEFS + ROAD_DEFS + RIVER_DEFS + WATER_DEFS)))
 
 
 def export_def(blob, entries, stem, destination, scales, sharpen):
@@ -108,6 +109,7 @@ def main():
         default=[],
         help="Limit adventure objects to a DEF prefix; repeatable (for example AVL, AVX, AVW).",
     )
+    parser.add_argument("--resource", action="append", default=[], help="Limit output to an exact DEF stem; repeatable.")
     parser.add_argument("--scales", type=int, nargs="+", default=(2, 3, 4))
     parser.add_argument("--no-sharpen", action="store_true")
     args = parser.parse_args()
@@ -116,6 +118,12 @@ def main():
     blob, entries = defs.read_lod(args.lod)
     prefixes = tuple(prefix.upper() for prefix in args.prefix)
     stems = selected_defs(entries, args.scope, prefixes)
+    requested = tuple(stem.upper() for stem in args.resource)
+    if requested:
+        unknown = sorted(set(requested) - set(stems))
+        if unknown:
+            raise ValueError(f"resources outside selected scope: {unknown}")
+        stems = [stem for stem in stems if stem in requested]
     missing = [stem for stem in stems if stem + ".DEF" not in entries]
     if missing:
         raise ValueError(f"missing original DEFs: {missing}")

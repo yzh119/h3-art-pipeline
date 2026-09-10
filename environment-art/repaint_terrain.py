@@ -26,7 +26,7 @@ def seeded_crop(texture, size, key):
     return texture[np.ix_(ys, xs)]
 
 
-def repaint(source, texture, key):
+def repaint(source, texture, key, water_only=False):
     rgba = np.asarray(source.convert("RGBA"), dtype=np.float32)
     old = rgba[..., :3] / 255.0
     material = seeded_crop(texture, source.size, key)
@@ -36,6 +36,12 @@ def repaint(source, texture, key):
     shading = np.clip(0.60 + luminance * 0.65, 0.48, 1.22)[..., None]
     rgb = np.clip(material * shading * 0.89 + old * 0.11, 0, 1)
     result = np.empty_like(rgba)
+    if water_only:
+        # WATRTL includes shoreline in the same body layer. Restrict the new
+        # material to blue-dominant pixels so sand, rocks and white foam retain
+        # the native transition geometry.
+        blue = (old[..., 2] > old[..., 0] * 1.08) & (old[..., 2] > old[..., 1] * 1.015)
+        rgb = np.where(blue[..., None], rgb, old)
     result[..., :3] = rgb * 255.0
     result[..., 3] = rgba[..., 3]
     return Image.fromarray(result.astype(np.uint8))
@@ -46,6 +52,7 @@ def main():
     parser.add_argument("--mod", type=Path, required=True)
     parser.add_argument("--terrain", required=True, help="Terrain DEF stem, e.g. GRASTL")
     parser.add_argument("--material", type=Path, required=True)
+    parser.add_argument("--water-only", action="store_true", help="Replace blue water pixels only; preserves shoreline in mixed water tiles.")
     args = parser.parse_args()
 
     if not args.material.is_file():
@@ -59,7 +66,7 @@ def main():
             if target.stem.endswith(("-shadow", "-overlay")):
                 continue
             original = Image.open(target).convert("RGBA")
-            updated = repaint(original, texture, f"{terrain}:{scale}:{target.name}")
+            updated = repaint(original, texture, f"{terrain}:{scale}:{target.name}", args.water_only)
             if updated.size != original.size:
                 raise ValueError(f"canvas changed: {target}")
             updated.save(target)

@@ -21,8 +21,56 @@ def alpha_bbox(image, threshold=1):
     return bbox
 
 
+def remove_solid_black_backdrop(image):
+    """Turn a generator's border-connected pure-black backdrop transparent.
+
+    Some generators return an opaque RGB image even when asked for a transparent
+    asset.  Their #000 backdrop must not be fitted as part of the landmark.  We
+    only remove pixels reachable from the canvas edge, so dark details enclosed
+    by the painting are retained.
+    """
+    image = image.convert("RGBA")
+    if image.getchannel("A").getextrema()[0] != 255:
+        return image
+
+    width, height = image.size
+    pixels = image.load()
+    seen = bytearray(width * height)
+    queue = []
+
+    def is_black(x, y):
+        red, green, blue, _ = pixels[x, y]
+        return red <= 3 and green <= 3 and blue <= 3
+
+    def add(x, y):
+        index = y * width + x
+        if not seen[index] and is_black(x, y):
+            seen[index] = 1
+            queue.append((x, y))
+
+    for x in range(width):
+        add(x, 0)
+        add(x, height - 1)
+    for y in range(1, height - 1):
+        add(0, y)
+        add(width - 1, y)
+
+    for x, y in queue:
+        for next_x, next_y in ((x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)):
+            if 0 <= next_x < width and 0 <= next_y < height:
+                add(next_x, next_y)
+
+    alpha = image.getchannel("A")
+    alpha_data = bytearray(alpha.tobytes())
+    for index, value in enumerate(seen):
+        if value:
+            alpha_data[index] = 0
+    image.putalpha(Image.frombytes("L", image.size, bytes(alpha_data)))
+    return image
+
+
 def fit_landmark(source, native, constrain_native_alpha=False):
-    source = source.convert("RGBA")
+    source = remove_solid_black_backdrop(source)
     # Generators occasionally leave near-zero pixels across an otherwise
     # transparent image. Ignore that fringe when locating the new artwork.
     crop = source.crop(alpha_bbox(source, threshold=8))

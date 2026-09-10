@@ -62,3 +62,15 @@ redraw rather than a resolution-only upscale.
 Validation distinguishes package checks, native asset-load logs, offline visual
 inspection and user in-game acceptance. Loading a mod does not establish that all
 14 battlefields or every ownership color have been visually tested in-game.
+
+### Distinguish customized art from the HD extraction baseline
+
+`audit_customization.py` compares every recorded body layer with a preserved
+baseline at one scale. It reports the resources that have received a deliberate
+repaint or replacement separately from resources that currently use only the
+structural 2×/3×/4× extraction layer.
+
+```sh
+python audit_customization.py --mod /path/to/mod --baseline /path/to/baseline \
+  --audit /path/to/adventure-objects-source-audit.json --output customization-audit.json
+```

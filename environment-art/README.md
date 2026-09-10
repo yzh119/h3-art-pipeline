@@ -13,6 +13,7 @@ Run from this repository, using fresh output directories:
 .venv/bin/python environment-art/build_map.py --data "$H3_DATA" --generated "$ART_WORK/map-generated" --out "$ART_WORK/map-package"
 .venv/bin/python environment-art/build_adventure_assets.py --lod "$H3_SPRITE_LOD" --out "$ART_WORK/adventure-terrain" --scope terrain --scales 2 3 4
 .venv/bin/python environment-art/build_adventure_assets.py --lod "$H3_SPRITE_LOD" --out "$ART_WORK/adventure-objects" --scope objects --prefix AVL --prefix AVX --prefix AVW --scales 2 3 4
+.venv/bin/python environment-art/repaint_terrain.py --mod "$ART_WORK/adventure-mod" --terrain GRASTL --material "$ART_WORK/grass-material.png"
 .venv/bin/python environment-art/font_probe.py --fonts "$CHINESE_FONT_DATA" --out "$ART_WORK/font-review" --display-scale 2.72
 ```
 
@@ -54,6 +55,9 @@ The script is a high-quality scaling baseline; use reviewed generated artwork fo
 individual landmarks only after preserving the same registration constraints.
 `register_landmarks.py` fits reviewed transparent artwork into the native body
 bounds and preserves the original canvas, JSON, shadow and overlay layers.
+`repaint_terrain.py` uses a reviewed tileable material but retains the native
+terrain tile selection, canvas, alpha and filenames. It is for a real material
+redraw rather than a resolution-only upscale.
 
 Validation distinguishes package checks, native asset-load logs, offline visual
 inspection and user in-game acceptance. Loading a mod does not establish that all

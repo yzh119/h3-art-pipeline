@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Register reviewed transparent landmark art into an existing HD adventure mod.
+"""Register reviewed *single-frame* landmark art into an existing HD adventure mod.
 
 The supplied artwork is fitted into the native body's bounding rectangle and
 bottom-aligned. It deliberately leaves the native canvas, shadows, overlays,
-JSON sequences and object template untouched.
+JSON sequences and object template untouched. Multi-frame scenery must be
+modelled and rendered as a complete Blender animation sequence instead.
 """
 import argparse
 from pathlib import Path
@@ -92,6 +93,28 @@ def fit_landmark(source, native, constrain_native_alpha=False):
     return result
 
 
+def body_frame_count(directory):
+    """Return the number of base body frames, excluding shadow/overlay layers."""
+    return sum(
+        1
+        for candidate in directory.glob("*_*.png")
+        if candidate.stem.split("_")[-1].isdigit()
+        and not candidate.name.endswith("-shadow.png")
+        and not candidate.name.endswith("-overlay.png")
+    )
+
+
+def require_single_frame_target(mod, stem):
+    for scale in (2, 3, 4):
+        directory = mod / "content" / f"sprites{scale}x" / "adventure-hd" / stem
+        count = body_frame_count(directory)
+        if count != 1:
+            raise ValueError(
+                f"{stem} has {count} body frames at {scale}x; "
+                "static registration is forbidden. Use the Blender sequence workflow."
+            )
+
+
 def parse_source(value):
     stem, separator, filename = value.partition("=")
     if not separator or not stem or not filename:
@@ -109,6 +132,7 @@ def main():
     for stem, filename in args.art:
         if not filename.is_file():
             raise ValueError(f"missing generated artwork: {filename}")
+        require_single_frame_target(args.mod, stem)
         source = Image.open(filename)
         for scale in (2, 3, 4):
             target = args.mod / "content" / f"sprites{scale}x" / "adventure-hd" / stem / "0_0.png"

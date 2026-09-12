@@ -8,7 +8,7 @@ JSON sequences and object template untouched.
 import argparse
 from pathlib import Path
 
-from PIL import Image, ImageChops
+from PIL import Image
 
 
 def alpha_bbox(image, threshold=1):
@@ -85,7 +85,10 @@ def fit_landmark(source, native, constrain_native_alpha=False):
     y = target_box[3] - crop.height
     result.alpha_composite(crop, (x, y))
     if constrain_native_alpha:
-        result.putalpha(ImageChops.multiply(result.getchannel("A"), native.getchannel("A")))
+        # The native alpha channel defines the original object footprint,
+        # including enclosed opaque openings. Reusing it exactly keeps
+        # occlusion and click geometry stable despite source resampling.
+        result.putalpha(native.getchannel("A"))
     return result
 
 

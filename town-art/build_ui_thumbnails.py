@@ -41,6 +41,7 @@ def build(args):
             inputs.append({'file': str(path), 'sha256': sha(path)})
     inputs.append({'file': str(args.backdrop), 'sha256': sha(args.backdrop)})
     backdrop = Image.open(args.backdrop).convert('RGBA')
+    building_backdrop = Image.open(args.building_backdrop).convert('RGBA') if args.building_backdrop else None
     rows = []
     for scale in (2, 3, 4):
         root = args.out / 'content' / f'sprites{scale}x'
@@ -52,14 +53,17 @@ def build(args):
                 target = images / f'building-{index:02}.png'
                 source = source.convert('RGBA')
                 # A reviewed architectural repaint may deliberately retain
-                # transparency. Composite it over the native thumbnail scene
-                # before exporting RGB, so the original ground framing remains
-                # available and transparent pixels never become a black field.
+                # transparency. Composite it over the supplied HD town scene
+                # (or the native thumbnail fallback) before exporting RGB, so
+                # transparent pixels never become a black field.
                 if source.getchannel('A').getextrema()[0] < 255:
-                    native = Image.open(args.reference / 'HALLNECR' / f'0_{index}.png').convert('RGBA')
-                    backdrop = native.resize(source.size, Image.Resampling.LANCZOS)
-                    backdrop.alpha_composite(source)
-                    source = backdrop
+                    if building_backdrop:
+                        background = building_backdrop.resize(source.size, Image.Resampling.LANCZOS)
+                    else:
+                        native = Image.open(args.reference / 'HALLNECR' / f'0_{index}.png').convert('RGBA')
+                        background = native.resize(source.size, Image.Resampling.LANCZOS)
+                    background.alpha_composite(source)
+                    source = background
                 source.convert('RGB').resize((150 * scale, 70 * scale), Image.Resampling.LANCZOS).save(target)
         for index in range(44):
             configs['HALLNECR']['images'].append({'group': 0, 'frame': index, 'file': f'necropolis-ui/building-{canonical[index]:02}.png'})
@@ -110,6 +114,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for option in ('reference', 'buildings', 'portraits', 'small-portraits', 'backdrop', 'out'):
         parser.add_argument('--' + option, type=Path, required=True)
+    parser.add_argument('--building-backdrop', type=Path,
+                        help='HD town backdrop used beneath transparent building masters')
     build(parser.parse_args())
 
 

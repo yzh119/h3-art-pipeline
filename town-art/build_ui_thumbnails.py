@@ -50,6 +50,16 @@ def build(args):
         for index in sorted(set(canonical.values())):
             with Image.open(args.buildings / f'hallnecr-{index:02}.png') as source:
                 target = images / f'building-{index:02}.png'
+                source = source.convert('RGBA')
+                # A reviewed architectural repaint may deliberately retain
+                # transparency. Composite it over the native thumbnail scene
+                # before exporting RGB, so the original ground framing remains
+                # available and transparent pixels never become a black field.
+                if source.getchannel('A').getextrema()[0] < 255:
+                    native = Image.open(args.reference / 'HALLNECR' / f'0_{index}.png').convert('RGBA')
+                    backdrop = native.resize(source.size, Image.Resampling.LANCZOS)
+                    backdrop.alpha_composite(source)
+                    source = backdrop
                 source.convert('RGB').resize((150 * scale, 70 * scale), Image.Resampling.LANCZOS).save(target)
         for index in range(44):
             configs['HALLNECR']['images'].append({'group': 0, 'frame': index, 'file': f'necropolis-ui/building-{canonical[index]:02}.png'})

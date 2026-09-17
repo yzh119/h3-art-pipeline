@@ -17,27 +17,58 @@ sys.path.insert(0,str(Path(__file__).resolve().parent))
 import render_sprites as render
 
 
+def normalize_hierarchy(meshes, height):
+    """Transform the imported hierarchy together, preserving skin bind spaces."""
+    points = render.world_vertices(meshes, bpy.context.evaluated_depsgraph_get())
+    if not points or not math.isfinite(height) or height <= 0:
+        raise ValueError('A nonempty model and positive finite height are required')
+    lo = Vector(tuple(min(v[i] for v in points) for i in range(3)))
+    hi = Vector(tuple(max(v[i] for v in points) for i in range(3)))
+    if hi.z - lo.z <= 1e-8:
+        raise ValueError('Model has no measurable height')
+    center = Vector(((lo.x + hi.x) / 2, (lo.y + hi.y) / 2, lo.z))
+    transform = Matrix.Scale(height / (hi.z - lo.z), 4) @ Matrix.Translation(-center)
+    roots = set()
+    related = list(meshes)
+    for mesh in meshes:
+        related.extend(mod.object for mod in mesh.modifiers
+                       if mod.type == 'ARMATURE' and mod.object is not None)
+    for obj in related:
+        while obj.parent is not None:
+            obj = obj.parent
+        roots.add(obj)
+    carrier = bpy.data.objects.new('ModelNormalization', None)
+    bpy.context.scene.collection.objects.link(carrier)
+    for obj in sorted(roots, key=lambda obj: obj.name):
+        world = obj.matrix_world.copy()
+        obj.parent = carrier
+        obj.matrix_parent_inverse = Matrix.Identity(4)
+        obj.matrix_world = world
+    carrier.matrix_world = transform
+    bpy.context.view_layer.update()
+    return lo, hi, carrier
+
+
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--model',type=Path,required=True);p.add_argument('--out',type=Path,required=True)
     p.add_argument('--height',type=float,default=1.7);p.add_argument('--samples',type=int,default=32)
+    p.add_argument('--exclude-object', action='append', default=[],
+                   help='Explicitly remove a reviewed placeholder mesh before measuring bounds')
     args=p.parse_args(sys.argv[sys.argv.index('--')+1:])
     if args.out.exists():raise ValueError('Output must be new')
     args.out.mkdir(parents=True)
     meshes,camera,_=render.build_scene(str(args.model),(768,768),12,0,680,580,args.samples,3,.16)
+    for name in args.exclude_object:
+        obj = next((obj for obj in meshes if obj.name == name), None)
+        if obj is None or obj.children:
+            raise ValueError('Excluded object must be an imported mesh without children: ' + name)
+        meshes.remove(obj)
+        bpy.data.objects.remove(obj, do_unlink=True)
     scene=bpy.context.scene;scene.render.threads_mode='FIXED';scene.render.threads=4
     scene.cycles.seed=0;scene.cycles.use_animated_seed=False
-    points=render.world_vertices(meshes,bpy.context.evaluated_depsgraph_get())
-    lo=Vector(tuple(min(v[i] for v in points) for i in range(3)));hi=Vector(tuple(max(v[i] for v in points) for i in range(3)))
-    scale=args.height/(hi.z-lo.z);center=Vector(((lo.x+hi.x)/2,(lo.y+hi.y)/2,lo.z))
-    transform=Matrix.Scale(scale,4)@Matrix.Translation(-center)
-    bpy.ops.object.select_all(action='DESELECT')
-    for obj in meshes:
-        world=transform@obj.matrix_world;obj.parent=None;obj.matrix_world=world
-        bpy.context.view_layer.objects.active=obj;obj.select_set(True)
-        bpy.ops.object.transform_apply(location=True,rotation=True,scale=True);obj.select_set(False)
-    bpy.context.view_layer.update()
-    report={'sourceSHA256':hashlib.sha256(args.model.read_bytes()).hexdigest(),'sourceBounds':[list(lo),list(hi)],'height':args.height,'objects':[]}
+    lo,hi,carrier=normalize_hierarchy(meshes,args.height)
+    report={'sourceSHA256':hashlib.sha256(args.model.read_bytes()).hexdigest(),'sourceBounds':[list(lo),list(hi)],'height':args.height,'normalizationCarrier':carrier.name,'excludedObjects':args.exclude_object,'objects':[]}
     for obj in meshes:
         report['objects'].append({'name':obj.name,'vertices':len(obj.data.vertices),'faces':len(obj.data.polygons),
             'components':sorted([len(c) for c in render.connected_components(obj.data)],reverse=True),'materials':[m.name for m in obj.data.materials if m]})

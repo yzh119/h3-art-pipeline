@@ -72,10 +72,24 @@ Both `rig_mesh.py --resume` and `gen_mesh.py --resume` reuse persisted task IDs.
 The mesh tool rejects an existing output or an accidental second submission to
 the same prefix. Resume checks the source image hash and restores the submitted
 parameters. `gen_mesh.py --no-remesh` retains detailed triangular geometry;
-inspect actual face counts before rigging. The Meshy rigging task-ID path has a
-300,000-face limit, so a dense source may require local simplification and rig
-transfer. See [Meshy's rigging documentation](https://docs.meshy.ai/en/api/rigging).
-Inspect returned geometry, textures, hands and held props.
+inspect actual face counts before rigging. Dense sources may exceed the rigging
+face limit. Use the [Remesh API](https://docs.meshy.ai/en/api/remesh) to create a
+smaller candidate without regenerating its concept or source model:
+
+```sh
+.venv/bin/python creature-art/remesh_mesh.py \
+  --input-meta "$ART_WORKSPACE/mesh/character.json" \
+  --out "$ART_WORKSPACE/mesh/remeshed" --polycount 50000 --topology quad
+.venv/bin/python creature-art/rig_mesh.py \
+  --input-meta "$ART_WORKSPACE/mesh/remeshed.json" \
+  --out "$ART_WORKSPACE/mesh/rigged"
+```
+
+`remesh_mesh.py --resume` polls and downloads the recorded task, retaining its
+submitted parameters and rejecting a different source task. Keep the dense
+original for comparison. Remeshing and rigging can change hands, thin weapons,
+textures or proportions, so inspect the result before authoring motion. See
+[Meshy's rigging documentation](https://docs.meshy.ai/en/api/rigging).
 
 Footless/flying/nonhuman models need an appropriate local rig instead of the
 humanoid auto-rig. Existing character scripts describe the particular mesh they

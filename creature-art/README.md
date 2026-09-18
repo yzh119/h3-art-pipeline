@@ -20,6 +20,10 @@ feet drift by four pixels across its idle loop.
 
 ## Why this exists
 
+For independent grip or cloth corrections, see
+[relative shape-key isolation](docs/shape-key-isolation.md). The Blender checker
+detects corrections that unintentionally include another region's deformation.
+
 The interesting problem in re-arting Heroes III is not "can a model draw a good
 skeleton". It is keeping ~150 creatures × up to 25 animation groups coherent, and
 getting every one of them through an engine that has strict, mostly undocumented,

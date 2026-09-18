@@ -411,6 +411,25 @@ cloth settings, contact, frame interpolation and the final appearance still
 need review. The regression uses a synthetic rig and needs no game assets.
 Validated with Blender 5.2.1.
 
+## Targets from reference images
+
+`projected_ik.choose_depth_on_ray()` adjusts a wrist target along a camera ray
+while preserving its projection. It keeps the previous depth when that point is
+reachable, or selects the nearest depth within the shoulder's reach sphere.
+When the entire ray is unreachable, it returns the closest ray point with
+`reachable=False`; the caller must still clamp the two-bone solve to the actual
+bone lengths. A small pixel error alone does not establish pose fidelity.
+
+Convert the target, camera direction and shoulder into the same IK coordinate
+space first, including any normalization or nonuniform parent scaling. Pass the
+chain's allowed reach as `maximum_reach`. The result reports the chosen position,
+depth adjustment and minimum shoulder distance. The regression needs no assets:
+
+```bash
+blender --background --python-exit-code 1 \
+  --python creature-art/test_projected_ik.py
+```
+
 ## Licensing
 
 Heroes III assets are proprietary. Anything derived from them — upscaled,

@@ -385,6 +385,32 @@ pip install pillow    # optional
 - [ ] Shadow and overlay render passes wired into the same manifest
 - [ ] Side-by-side comparison sheet (original vs. replacement) for art review
 
+## Cloth collision proxies
+
+`build_joint_colliders.py` creates animated ellipsoids between explicit joint
+heads. This avoids using an imported bone's display tail as the anatomical end:
+one Castle repair scene had a 34-unit tail where the adjacent joint was only
+0.34 units away. Segment lengths are checked at every sampled frame before any
+collision objects are created. Existing scenes are never overwritten.
+
+Provide a local JSON array such as
+`[{"start":"LeftUpLeg","end":"LeftLeg","radius":0.12}]`.
+Radii and the maximum length use the scene's world units.
+
+```bash
+blender --background --python creature-art/build_joint_colliders.py -- \
+  --scene /private/character.blend --output /private/collision-review.blend \
+  --segments /private/segments.json --rig Armature \
+  --frames 1 11 --max-length 0.65
+blender --background --python creature-art/test_joint_colliders.py
+```
+
+Use `--action` to select an existing rig action. The output includes a JSON
+length report. These are simplified, hidden-in-render collision surfaces;
+cloth settings, contact, frame interpolation and the final appearance still
+need review. The regression uses a synthetic rig and needs no game assets.
+Validated with Blender 5.2.1.
+
 ## Licensing
 
 Heroes III assets are proprietary. Anything derived from them — upscaled,

@@ -17,8 +17,25 @@ sys.path.insert(0,str(Path(__file__).resolve().parent))
 import render_sprites as render
 
 
+def without_bone_widgets(meshes):
+    """Exclude custom bone display objects from physical model measurements."""
+    rigs = set()
+    for mesh in meshes:
+        rigs.update(mod.object for mod in mesh.modifiers
+                    if mod.type == 'ARMATURE' and mod.object is not None)
+        parent = mesh.parent
+        while parent is not None:
+            if parent.type == 'ARMATURE':
+                rigs.add(parent)
+            parent = parent.parent
+    widgets = {bone.custom_shape for rig in rigs for bone in rig.pose.bones
+               if bone.custom_shape is not None}
+    return [mesh for mesh in meshes if mesh not in widgets]
+
+
 def normalize_hierarchy(meshes, height):
     """Transform the imported hierarchy together, preserving skin bind spaces."""
+    meshes = without_bone_widgets(meshes)
     points = render.world_vertices(meshes, bpy.context.evaluated_depsgraph_get())
     if not points or not math.isfinite(height) or height <= 0:
         raise ValueError('A nonempty model and positive finite height are required')
@@ -67,8 +84,11 @@ def main():
         bpy.data.objects.remove(obj, do_unlink=True)
     scene=bpy.context.scene;scene.render.threads_mode='FIXED';scene.render.threads=4
     scene.cycles.seed=0;scene.cycles.use_animated_seed=False
+    measured_meshes = without_bone_widgets(meshes)
+    ignored_widgets = [obj.name for obj in meshes if obj not in measured_meshes]
+    meshes = measured_meshes
     lo,hi,carrier=normalize_hierarchy(meshes,args.height)
-    report={'sourceSHA256':hashlib.sha256(args.model.read_bytes()).hexdigest(),'sourceBounds':[list(lo),list(hi)],'height':args.height,'normalizationCarrier':carrier.name,'excludedObjects':args.exclude_object,'objects':[]}
+    report={'sourceSHA256':hashlib.sha256(args.model.read_bytes()).hexdigest(),'sourceBounds':[list(lo),list(hi)],'height':args.height,'normalizationCarrier':carrier.name,'excludedObjects':args.exclude_object,'ignoredBoneWidgets':ignored_widgets,'objects':[]}
     for obj in meshes:
         report['objects'].append({'name':obj.name,'vertices':len(obj.data.vertices),'faces':len(obj.data.polygons),
             'components':sorted([len(c) for c in render.connected_components(obj.data)],reverse=True),'materials':[m.name for m in obj.data.materials if m]})

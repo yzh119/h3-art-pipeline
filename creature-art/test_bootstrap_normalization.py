@@ -11,7 +11,7 @@ import bpy
 from mathutils import Vector
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from bootstrap_review import normalize_hierarchy
+from bootstrap_review import normalize_hierarchy, without_bone_widgets
 from render_sprites import world_vertices
 
 
@@ -55,7 +55,17 @@ for parent_mesh in (False, True):
     angles = (0, .6, -1.1)
     before = [sample(mesh, rig, angle) for angle in angles]
     sample(mesh, rig, 0)
-    normalize_hierarchy([mesh], 1.7)
+    # Importers can create unlinked mesh objects for bone display. Their geometry
+    # must not move the physical model's floor or change its normalization scale.
+    widget_data = bpy.data.meshes.new('WidgetGeometry')
+    widget_data.from_pydata([(0, 0, -100), (1, 0, 100), (0, 1, 0)], [], [(0, 1, 2)])
+    widget = bpy.data.objects.new('UnusualControlName', widget_data)
+    rig.pose.bones['upper'].custom_shape = widget
+    widget_world = widget.matrix_world.copy()
+    assert without_bone_widgets([mesh, widget]) == [mesh]
+    normalize_hierarchy([mesh, widget], 1.7)
+    assert widget.parent is None
+    assert widget.matrix_world == widget_world
     # Original rest bounds are x=[1.8,2.2], y=3, z=[4,6].
     expected = [[(v - Vector((2, 3, 4))) * .85 for v in pose] for pose in before]
     for angle, wanted in zip(angles, expected):
@@ -69,4 +79,4 @@ for parent_mesh in (False, True):
         assert all(math.isfinite(v) for point in actual for v in point)
         actual = sample(bpy.data.objects['TestMesh'], bpy.data.objects['TestRig'], angles[-1])
         assert max((a - b).length for a, b in zip(actual, expected[-1])) < 1e-5
-print('PASS: parented and unparented skinned meshes retain three poses, including after reopening')
+print('PASS: bone widgets excluded; parented/unparented meshes retain three poses after reopening')

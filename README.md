@@ -52,6 +52,14 @@ Generated sources and `.blend` exports remain in an external art workspace.
 
 ## Current division of work
 
+`creature-art/blend_armature_volume.py` adds a masked blend between linear and
+volume-preserving skinning in Blender. Call `add_volume_blend(mesh, rig,
+"MaskGroup")` after an unmasked linear Armature modifier; the existing vertex
+group supplies influence from zero to one. It does not change bone weights or
+the rest mesh. `test_blend_armature_volume.py` checks zero, full and partial
+influence plus invalid stacks, using a synthetic rig without game assets:
+`blender -b --python-exit-code 1 --python creature-art/test_blend_armature_volume.py`.
+
 Imagegen produces visual concepts. Meshy still supplies textured base geometry
 and suitable humanoid auto-rigs. Astra writes local repair, rigging, motion,
 rendering and packaging tools. Footless Wight uses a local rig. Native group

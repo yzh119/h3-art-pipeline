@@ -59,6 +59,20 @@ does not correct stylized geometry, unsuitable textures or lighting.
 
 ## Bind detailed meshes through a proxy
 
+For local weight corrections, [skin_weights.py](skin_weights.py) provides
+`replace_vertex_weights(obj, vertex_index, weights)`. It copies numeric group
+indices before removing old memberships. Keeping `VertexGroupElement` references
+from `list(vertex.groups)` while removing weights can leave stale memberships
+behind. The Griffin repair exposed this as weight totals above one and severe
+stretching. Run the Blender regression with:
+
+```sh
+blender --background --python-exit-code 1 --python test_skin_weights.py
+```
+
+This checks replacement and neighboring-vertex preservation, not anatomical
+binding quality. Review the resulting motion separately.
+
 For an existing fitted creature skeleton, [proxy_skin.py](proxy_skin.py) can
 compute Blender heat weights on a temporary voxel mesh, then transfer them to
 the detailed body. It preserves the body's vertices, faces, UVs and materials.

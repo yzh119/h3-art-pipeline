@@ -32,6 +32,31 @@ layout expectations.
 The engine constraints below are the ones that silently produce a broken-looking
 creature rather than an error message. Each is enforced by `validate_creature_animation.py`.
 
+## Preserve materials through rigging
+
+Keep the textured source GLB as well as the rigged GLB. A rigging result can
+change material settings even when the UV layout is unchanged. In the Castle
+study, a non-metallic source returned from rigging with emissive base colour
+and an omitted metallic factor (which defaults to 1). A correct modelling
+preview therefore did not guarantee a correct animation render.
+
+For a single-material body with unchanged triangle UVs:
+
+```sh
+python gen_mesh.py /path/to/concept.png --out /path/to/body \
+  --pbr --pose-mode a-pose --no-image-enhancement --texture-resolution 4k
+# Rig the resulting body separately, then restore its source material:
+blender --background --python-exit-code 1 --python restore_rig_materials.py -- \
+  --source /path/to/body.glb --rigged /path/to/body-rigged.glb \
+  --out /path/to/restored.blend --glb-out /path/to/restored.glb
+```
+
+The tool verifies the UV triangle signature, restores the original material
+and its packed maps, and preserves the rig. It refuses changed UV layouts and
+multi-material bodies; those require explicit material matching. Compare the
+result visually, including at the final game scale. Material restoration alone
+does not correct stylized geometry, unsuitable textures or lighting.
+
 ## Engine constraints
 
 All references are to this repository at the commit this document was added. The

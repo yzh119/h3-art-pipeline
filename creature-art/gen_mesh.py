@@ -92,13 +92,21 @@ def main(argv=None):
     parser.add_argument("--topology", default="quad", choices=["quad", "triangle"],
                         help="quad deforms better once rigged (default)")
     parser.add_argument("--no-texture", action="store_true")
+    parser.add_argument("--pbr", action="store_true",
+                        help="generate metallic, roughness and normal maps alongside base colour")
     parser.add_argument("--no-remesh", action="store_true", help="Keep the detailed triangular reconstruction")
     parser.add_argument("--resume", action="store_true", help="Poll/download the persisted task without submitting")
     parser.add_argument("--no-image-enhancement", action="store_true", help="preserve an already reviewed concept")
     parser.add_argument("--texture-resolution", choices=["2k", "4k", "8k"], default="2k")
     parser.add_argument("--no-crop", action="store_true", help="send the frame as-is")
     parser.add_argument("--format", default="glb", help="which model_urls entry to download")
+    parser.add_argument("--pose-mode", choices=["a-pose", "t-pose", ""], default=None,
+                        help="ask Meshy to re-pose the character (rig-ready A-pose from an in-action sprite)")
+    parser.add_argument("--texture-prompt", default=None, help="text guidance for the texture pass")
     args = parser.parse_args(argv)
+
+    if args.pbr and args.no_texture:
+        parser.error("--pbr requires textures; omit --no-texture")
 
     key = os.environ.get("MESHY_API_KEY")
     if not key:
@@ -119,7 +127,15 @@ def main(argv=None):
         "target_polycount": args.polycount,
         "should_texture": not args.no_texture,
 
+
     }
+
+    if args.pose_mode is not None:
+        payload["pose_mode"] = args.pose_mode
+    if args.pbr:
+        payload["enable_pbr"] = True
+    if args.texture_prompt:
+        payload["texture_prompt"] = args.texture_prompt
 
     if args.no_remesh:
         payload.pop("topology")

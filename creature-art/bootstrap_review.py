@@ -92,7 +92,19 @@ def main():
     for obj in meshes:
         report['objects'].append({'name':obj.name,'vertices':len(obj.data.vertices),'faces':len(obj.data.polygons),
             'components':sorted([len(c) for c in render.connected_components(obj.data)],reverse=True),'materials':[m.name for m in obj.data.materials if m]})
-    target=Vector((0,0,args.height*.5));camera.data.ortho_scale=2.25
+    target=Vector((0,0,args.height*.5))
+    # Keep one scale for the whole turnaround, including wide accessories such
+    # as wings. Height normalization alone cannot guarantee horizontal fit.
+    points=render.world_vertices(meshes,bpy.context.evaluated_depsgraph_get())
+    half_extent=0.0
+    for yaw in range(0,360,45):
+        camera.rotation_euler=(math.radians(78),0,math.radians(yaw))
+        inverse=camera.rotation_euler.to_matrix().transposed()
+        for point in points:
+            projected=inverse@(point-target)
+            half_extent=max(half_extent,abs(projected.x),abs(projected.y))
+    camera.data.ortho_scale=max(2.25,half_extent*2*1.08)
+    report['reviewOrthoScale']=camera.data.ortho_scale
     for yaw in range(0,360,45):
         camera.rotation_euler=(math.radians(78),0,math.radians(yaw))
         camera.location=target+camera.rotation_euler.to_matrix()@Vector((0,0,10))

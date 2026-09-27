@@ -57,6 +57,31 @@ multi-material bodies; those require explicit material matching. Compare the
 result visually, including at the final game scale. Material restoration alone
 does not correct stylized geometry, unsuitable textures or lighting.
 
+## Bind detailed meshes through a proxy
+
+For an existing fitted creature skeleton, [proxy_skin.py](proxy_skin.py) can
+compute Blender heat weights on a temporary voxel mesh, then transfer them to
+the detailed body. It preserves the body's vertices, faces, UVs and materials.
+This helped the Griffin trial after simple distance weights stretched feathers
+during flight and the external humanoid rig service rejected its pose.
+
+```sh
+blender --background --python-exit-code 1 --python proxy_skin.py -- \
+  --source /path/to/assembled.blend --body Body --armature Rig \
+  --exclude-bone Root --exclude-prefix Wing. --out /path/to/binding-review
+```
+
+The output includes an editable scene, a hidden proxy and an audit. Exclude
+separately bound wings or other attachments from the body's heat solve.
+Defaults assume metre-scale geometry. The tool rejects large unweighted regions;
+small isolated proxy vertices can inherit nearby valid weights within the
+reported distance limit. Existing non-bone vertex groups remain intact.
+
+This does not place joints, author motion or establish appearance acceptance.
+Review large bends, claws, feather seams and the complete action set after
+transfer. The [Castle blog](https://yzh119.github.io/posts/castle-cavalry-angels/)
+includes concepts, actual Blender renders and failed binding attempts.
+
 ## Engine constraints
 
 All references are to this repository at the commit this document was added. The

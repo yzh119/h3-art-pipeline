@@ -3,6 +3,8 @@
 
 Run in Blender with --manifest JSON --out DIRECTORY. Manifest rows specify
 name, scene and upperFraction (fraction of projected model height to retain).
+Optional frame selects a pose; boundsObjects names visible meshes used for framing
+without hiding other geometry, and exposure adds stops to the scene exposure.
 The intentional bust crop may cut the lower torso; the camera retains top margin.
 """
 import argparse
@@ -30,8 +32,14 @@ def main():
         source_hash = hashlib.sha256(source.read_bytes()).hexdigest()
         bpy.ops.wm.open_mainfile(filepath=str(source))
         scene = bpy.context.scene
-        scene.frame_set(1)
+        scene.frame_set(spec.get('frame', 1))
+        scene.view_settings.exposure += spec.get('exposure', 0)
         meshes = [o for o in scene.objects if o.type == 'MESH' and not o.hide_render]
+        if spec.get('boundsObjects'):
+            names = set(spec['boundsObjects'])
+            meshes = [o for o in meshes if o.name in names]
+            if {o.name for o in meshes} != names:
+                raise ValueError(f"Missing visible portrait bounds objects: {names}")
         points = render.world_vertices(meshes, bpy.context.evaluated_depsgraph_get())
         camera = scene.camera
         rotation = camera.rotation_euler.to_matrix()
